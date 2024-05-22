@@ -88,6 +88,10 @@ int PS2Controller_::loop() {
   }
 }
 
+bool PS2Controller_::isDebugEnabled() {
+  return _debugEnabled;
+}
+
 //-------------------------------------------------------------------------------------------------
 
 void PS2Controller::set(EventDispatcher* eventDispatcher) {
@@ -252,7 +256,7 @@ int PS2Controller::processDPadLeftButtonPress() {
 }
 
 bool PS2Controller::isDebugEnabled() {
-  return _debugEnabled;
+  return PS2Controller_::isDebugEnabled();
 }
 
 bool PS2Controller::isJoystickChanged(int nJoyX, int nJoyY) {
@@ -274,15 +278,93 @@ int PS2Controller::adjustJoystickY(int nJoyY) {
 
 //-------------------------------------------------------------------------------------------------
 
-void PS2Kontroller::set(EventProcessor* eventProcessor) {
+#if __JOYSTICK_MESSAGE_STRUCTURE__ == CONTROL_PACKET_V1
+const uint8_t PS2ControlPacket::messageSize = 0 // SIGNATURE
+    + sizeof(uint16_t) // pressingFlags
+    + sizeof(uint16_t) // Joystick-X
+    + sizeof(uint16_t) // Joystick-Y
+    + sizeof(uint32_t);
+#else
+const uint8_t PS2ControlPacket::messageSize = 0 // SIGNATURE
+    + sizeof(uint16_t) // pressingFlags
+    + sizeof(uint16_t) // togglingFlags
+    + sizeof(uint16_t) // Joystick-X
+    + sizeof(uint16_t) // Joystick-Y
+    + sizeof(uint32_t);
+#endif
+
+PS2ControlPacket::PS2ControlPacket(uint16_t buttons, uint16_t x, uint16_t y, uint32_t extras) {
+  update(buttons, x, y, extras);
+}
+
+void PS2ControlPacket::update(uint16_t buttons, uint16_t x, uint16_t y, uint32_t extras) {
+  _pressingFlags = buttons;
+  _x = x;
+  _y = y;
+  _extras = extras;
+}
+
+PS2ControlPacket::PS2ControlPacket(uint16_t x, uint16_t y, uint16_t pressingFlags, uint16_t togglingFlags, uint32_t extras) {
+  update(x, y, pressingFlags, togglingFlags, extras);
+}
+
+void PS2ControlPacket::update(uint16_t x, uint16_t y, uint16_t pressingFlags, uint16_t togglingFlags, uint32_t extras) {
+  _x = x;
+  _y = y;
+  _pressingFlags = pressingFlags;
+  _togglingFlags = togglingFlags;
+  _extras = extras;
+}
+
+uint16_t PS2ControlPacket::getPressingFlags() {
+  return _pressingFlags;
+}
+
+uint16_t PS2ControlPacket::getTogglingFlags() {
+  return _togglingFlags;
+}
+
+uint16_t PS2ControlPacket::getX() {
+  return _x;
+}
+
+uint16_t PS2ControlPacket::getY() {
+  return _y;
+}
+
+uint32_t PS2ControlPacket::getExtras() {
+  return _extras;
+}
+
+uint8_t PS2ControlPacket::length() {
+  return messageSize;
+}
+
+bool decodeMessage(uint8_t* msg, char* cmd, uint16_t* buttons, uint16_t* x, uint16_t* y, uint32_t* extras);
+bool decodeMessage(uint8_t* msg, char* cmd,
+    uint16_t* x, uint16_t* y,
+    uint16_t* pressingFlags,
+    uint16_t* togglingFlags,
+    uint32_t* extras);
+
+void* PS2ControlPacket::deserialize(uint8_t* buf) {
+  if (buf == NULL) {
+    return NULL;
+  }
+  #if __JOYSTICK_MESSAGE_STRUCTURE__ == CONTROL_PACKET_V1
+  decodeMessage(buf, NULL, &(_pressingFlags), &(_x), &(_y), &(_extras));
+  #else
+  decodeMessage(buf, NULL, &(_x), &(_y), &(_pressingFlags), &(_togglingFlags), &(_extras));
+  #endif
+
+  return this;
+}
+
+void PS2Listener::set(PS2Processor* eventProcessor) {
   _eventProcessor = eventProcessor;
 };
 
-void PS2Kontroller::set(MovingResolver* movingResolver) {
-  _movingResolver = movingResolver;
-};
-
-int PS2Kontroller::read(JoystickAction* action, MovingCommand* command) {
+int PS2Listener::read(PS2ControlPacket* action) {
   byte vibrate = 0;
   ps2x.read_gamepad(false, vibrate); // disable vibration of the controller
 
@@ -350,41 +432,37 @@ int PS2Kontroller::read(JoystickAction* action, MovingCommand* command) {
 
   action->update(buttons, lJoyX, lJoyY, 0);
 
-  if (_movingResolver != NULL && command != NULL) {
-    _movingResolver->resolve(command, lJoyX, lJoyY);
-  }
-
   return 1;
 }
 
-int PS2Kontroller::check() {
-  JoystickAction action;
-  MovingCommand command;
+int PS2Listener::check() {
+  PS2ControlPacket action;
 
-  int ok = read(&action, &command);
+  int ok = read(&action);
 
   if (ok == 1) {
     if (_eventProcessor != NULL) {
-      _eventProcessor->processEvents(&action, &command);
+      _eventProcessor->process(&action);
       return 0xff;
     }
-
-    uint16_t pressed = processButtonPress(action.getPressingFlags());
-    if (pressed) {
-      return pressed;
-    }
-
-    return processJoystickChange(action.getX(), action.getY(), 'L');
   }
 
   return ok;
 }
 
-bool PS2Kontroller::isDebugEnabled() {
+uint32_t PS2EventDispatcher::process(PS2ControlPacket* packet) {
+  uint16_t pressed = processButtonPress(packet->getPressingFlags());
+  if (pressed) {
+    return pressed;
+  }
+  return processJoystickChange(packet->getX(), packet->getY(), 'L');
+}
+
+bool PS2EventDispatcher::isDebugEnabled() {
   return _debugEnabled;
 }
 
-bool PS2Kontroller::isJoystickChanged(int nJoyX, int nJoyY) {
+bool PS2EventDispatcher::isJoystickChanged(int nJoyX, int nJoyY) {
   #if defined(PS2_JOYSTICK_CHECKING_CHANGE)
   return nJoyX >= PS2_JOYSTICK_DEADZONE_X || nJoyX <= -PS2_JOYSTICK_DEADZONE_X ||
       nJoyY >= PS2_JOYSTICK_DEADZONE_Y || nJoyY <= -PS2_JOYSTICK_DEADZONE_Y;
@@ -393,10 +471,10 @@ bool PS2Kontroller::isJoystickChanged(int nJoyX, int nJoyY) {
   #endif
 }
 
-int PS2Kontroller::adjustJoystickX(int nJoyX) {
+int PS2EventDispatcher::adjustJoystickX(int nJoyX) {
   return map(nJoyX, 0, 1024, PS2_JOYSTICK_RANGE_X, -PS2_JOYSTICK_RANGE_X);
 }
 
-int PS2Kontroller::adjustJoystickY(int nJoyY) {
+int PS2EventDispatcher::adjustJoystickY(int nJoyY) {
   return map(nJoyY, 0, 1024, PS2_JOYSTICK_RANGE_Y, -PS2_JOYSTICK_RANGE_Y);
 }

@@ -14,6 +14,7 @@
 #define __DISPATCHER_RUNNING_LOG__      0
 #define __ROBOCAR_RUNNING_LOG__         0
 #define __PEDESTAL_RUNNING_LOG__        0
+#define __INPUT_RUNNING_LOG__           1
 
 #define  __DEBUG_LOG_RF24_LISTENER__    0
 

@@ -39,30 +39,65 @@ class PS2Controller_ {
     void reload();
     virtual int check();
   protected:
+    bool isDebugEnabled();
     PS2X ps2x;
+  private:
     bool _debugEnabled;
     int _errorCode;
     bool _errorDisplayed;
 };
 
-class PS2Kontroller: PS2Controller_, InputController {
+class PS2ControlPacket {
   public:
-    PS2Kontroller(): PS2Controller_() {};
-    void set(EventProcessor* eventProcessor);
-    void set(MovingResolver* movingResolver);
-    int read(JoystickAction* action, MovingCommand* command);
-    int check();
+    static const uint8_t messageSize;
+    PS2ControlPacket(uint16_t buttons, uint16_t x, uint16_t y, uint32_t extras);
+    PS2ControlPacket(uint16_t x=0, uint16_t y=0, uint16_t pressingFlags=0, uint16_t togglingFlags=0, uint32_t extras=0);
+    void update(uint16_t buttons, uint16_t x, uint16_t y, uint32_t extras);
+    void update(uint16_t x, uint16_t y, uint16_t pressingFlags, uint16_t togglingFlags, uint32_t extras);
+    uint16_t getPressingFlags();
+    uint16_t getTogglingFlags();
+    uint16_t getX();
+    uint16_t getY();
+    uint32_t getExtras();
+    uint8_t length();
+    void* deserialize(uint8_t* buf);
+  private:
+    uint16_t _pressingFlags = 0;
+    uint16_t _togglingFlags = 0;
+    uint16_t _x = 0;
+    uint16_t _y = 0;
+    uint32_t _extras = 0;
+};
+
+class PS2Processor {
+  public:
+    virtual uint32_t process(PS2ControlPacket* packet);
+};
+
+class PS2Listener: public PS2Controller_ {
+  public:
+    PS2Listener(): PS2Controller_() {};
+    void set(PS2Processor* eventProcessor);
+    virtual int check();
+  protected:
+    int read(PS2ControlPacket* packet);
+  private:
+    PS2Processor* _eventProcessor = NULL;
+};
+
+class PS2EventDispatcher: public PS2Processor, public InputController {
+  public:
+    virtual uint32_t process(PS2ControlPacket* packet);
   protected:
     bool isDebugEnabled();
     bool isJoystickChanged(int, int);
     int adjustJoystickX(int nJoyX);
     int adjustJoystickY(int nJoyY);
   private:
-    EventProcessor* _eventProcessor = NULL;
-    MovingResolver* _movingResolver = NULL;
+    bool _debugEnabled;
 };
 
-class PS2Controller: PS2Controller_, InputController {
+class PS2Controller: public PS2Controller_, public InputController {
   public:
     PS2Controller(): PS2Controller_() {};
     void set(EventDispatcher* eventDispatcher);
