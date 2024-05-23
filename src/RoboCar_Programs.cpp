@@ -2,24 +2,8 @@
 
 //-------------------------------------------------------------------------------------------------
 
-RemoteControlCar::RemoteControlCar(char* title,
-    DisplayAdapter* displayAdapter,
-    RoboCarHandler* roboCarHandler) {
-  _title = title;
-  _displayAdapter = displayAdapter;
-  _roboCarHandler = roboCarHandler;
-}
-
 uint8_t RemoteControlCar::getId() {
   return 1;
-}
-
-void RemoteControlCar::set(DisplayAdapter* displayAdapter) {
-  _displayAdapter = displayAdapter;
-}
-
-void RemoteControlCar::set(RoboCarHandler* roboCarHandler) {
-  _roboCarHandler = roboCarHandler;
 }
 
 char* RemoteControlCar::getTitle() {
@@ -56,6 +40,22 @@ int RemoteControlCar::close() {
   return 0;
 }
 
+RemoteControlCar::RemoteControlCar(char* title,
+    DisplayAdapter* displayAdapter,
+    RoboCarHandler* roboCarHandler) {
+  _title = title;
+  _displayAdapter = displayAdapter;
+  _roboCarHandler = roboCarHandler;
+}
+
+void RemoteControlCar::set(DisplayAdapter* displayAdapter) {
+  _displayAdapter = displayAdapter;
+}
+
+void RemoteControlCar::set(RoboCarHandler* roboCarHandler) {
+  _roboCarHandler = roboCarHandler;
+}
+
 bool RemoteControlCar::isDebugEnabled() {
   return _debugEnabled;
 }
@@ -81,18 +81,6 @@ RoboCarHandler* RemoteControlCar::getRoboCarHandler() {
 
 uint8_t LineFollowingCar::getId() {
   return 2;
-}
-
-void LineFollowingCar::set(DisplayAdapter* displayAdapter) {
-  RemoteControlCar::set(displayAdapter);
-}
-
-void LineFollowingCar::set(RoboCarHandler* roboCarHandler) {
-  RemoteControlCar::set(roboCarHandler);
-}
-
-void LineFollowingCar::set(LineDetector* lineDetector) {
-  _lineDetector = lineDetector;
 }
 
 int LineFollowingCar::check(void* action_, void* command_) {
@@ -125,6 +113,18 @@ int LineFollowingCar::check(void* action_, void* command_) {
   return RemoteControlCar::check(action_, command_);
 }
 
+void LineFollowingCar::set(DisplayAdapter* displayAdapter) {
+  RemoteControlCar::set(displayAdapter);
+}
+
+void LineFollowingCar::set(RoboCarHandler* roboCarHandler) {
+  RemoteControlCar::set(roboCarHandler);
+}
+
+void LineFollowingCar::set(LineDetector* lineDetector) {
+  _lineDetector = lineDetector;
+}
+
 void LineFollowingCar::showSpeedometer_(JoystickAction* action, MovingCommand* command) {
   if (getDisplayAdapter() != NULL) {
     char text[16] = {};
@@ -137,19 +137,6 @@ void LineFollowingCar::showSpeedometer_(JoystickAction* action, MovingCommand* c
 
 uint8_t DancingPuppetCar::getId() {
   return 3;
-}
-
-void DancingPuppetCar::set(DisplayAdapter* displayAdapter) {
-  RemoteControlCar::set(displayAdapter);
-}
-
-void DancingPuppetCar::set(RoboCarHandler* roboCarHandler) {
-  RemoteControlCar::set(roboCarHandler);
-}
-
-void DancingPuppetCar::set(PedestalGroup* pedestalGroup, bool autoPedestal) {
-  _pedestalGroup = pedestalGroup;
-  _autoPedestal = autoPedestal;
 }
 
 int DancingPuppetCar::begin() {
@@ -175,4 +162,17 @@ int DancingPuppetCar::close() {
   }
 
   return RemoteControlCar::close();
+}
+
+void DancingPuppetCar::set(DisplayAdapter* displayAdapter) {
+  RemoteControlCar::set(displayAdapter);
+}
+
+void DancingPuppetCar::set(RoboCarHandler* roboCarHandler) {
+  RemoteControlCar::set(roboCarHandler);
+}
+
+void DancingPuppetCar::set(PedestalGroup* pedestalGroup, bool autoPedestal) {
+  _pedestalGroup = pedestalGroup;
+  _autoPedestal = autoPedestal;
 }

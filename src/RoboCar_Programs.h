@@ -11,16 +11,18 @@
 
 class RemoteControlCar: public ProgramCapsule {
   public:
-    RemoteControlCar(char* title,
-        DisplayAdapter* displayAdapter=NULL,
-        RoboCarHandler* roboCarHandler=NULL);
+    // BEGIN: overriding
     uint8_t getId();
-    void set(DisplayAdapter* displayAdapter);
-    void set(RoboCarHandler* roboCarHandler);
     virtual char* getTitle();
     virtual int begin();
     virtual int check(void* action, void* command);
     virtual int close();
+    // END: overriding
+    RemoteControlCar(char* title,
+        DisplayAdapter* displayAdapter=NULL,
+        RoboCarHandler* roboCarHandler=NULL);
+    void set(DisplayAdapter* displayAdapter);
+    void set(RoboCarHandler* roboCarHandler);
   protected:
     virtual void showSpeedometer_(JoystickAction* action, MovingCommand* command);
     DisplayAdapter* getDisplayAdapter();
@@ -35,16 +37,18 @@ class RemoteControlCar: public ProgramCapsule {
 
 class LineFollowingCar: public RemoteControlCar {
   public:
+    // BEGIN: overriding
+    uint8_t getId();
+    int check(void* action, void* command);
+    // END: overriding
     LineFollowingCar(char* title,
         DisplayAdapter* displayAdapter=NULL,
         RoboCarHandler* roboCarHandler=NULL): RemoteControlCar(title,
             displayAdapter,
             roboCarHandler) {};
-    uint8_t getId();
     void set(DisplayAdapter* displayAdapter);
     void set(RoboCarHandler* roboCarHandler);
     void set(LineDetector* lineDetector);
-    int check(void* action, void* command);
   protected:
     void showSpeedometer_(JoystickAction* action, MovingCommand* command);
   private:
@@ -53,6 +57,12 @@ class LineFollowingCar: public RemoteControlCar {
 
 class DancingPuppetCar: public RemoteControlCar {
   public:
+    // BEGIN: overriding
+    uint8_t getId();
+    int begin();
+    int check(void* action, void* command);
+    int close();
+    // END: overriding
     DancingPuppetCar(char* title,
         DisplayAdapter* displayAdapter=NULL,
         RoboCarHandler* roboCarHandler=NULL,
@@ -63,13 +73,9 @@ class DancingPuppetCar: public RemoteControlCar {
               _pedestalGroup = pedestalGroup;
               _autoPedestal = autoPedestal;
             };
-    uint8_t getId();
     void set(DisplayAdapter* displayAdapter);
     void set(RoboCarHandler* roboCarHandler);
     void set(PedestalGroup* pedestalGroup, bool autoPedestal=false);
-    int begin();
-    int check(void* action, void* command);
-    int close();
   private:
     PedestalGroup* _pedestalGroup = NULL;
     bool _autoPedestal = false;
