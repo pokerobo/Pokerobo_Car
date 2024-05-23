@@ -7,9 +7,13 @@
 #ifndef __PS2_CONTROLLER_H__
 #define __PS2_CONTROLLER_H__
 
-#include "Commons.h"
+#include "Pokerobo_PSx.h"
+
 #include "Input_Controller.h"
 #include "Event_Dispatcher.h"
+
+#ifndef __POKEROBO_PSX_PS2_CONTROLLER_H__
+#include "Commons.h"
 #include <PS2X_lib.h>
 
 #ifndef __PS2INIT_LOG_ENABLED__
@@ -84,6 +88,7 @@ class PS2Listener: public PS2Controller_ {
   private:
     PS2Processor* _eventProcessor = NULL;
 };
+#endif//__POKEROBO_PSX_PS2_CONTROLLER_H__
 
 class PS2EventDispatcher: public PS2Processor, public InputController {
   public:

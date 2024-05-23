@@ -1,5 +1,6 @@
 #include "PS2_Controller.h"
 
+#ifndef __POKEROBO_PSX_PS2_CONTROLLER_H__
 PS2Controller_::PS2Controller_() {
   _debugEnabled = true;
   _errorCode = 0;
@@ -91,6 +92,7 @@ int PS2Controller_::loop() {
 bool PS2Controller_::isDebugEnabled() {
   return _debugEnabled;
 }
+#endif//__POKEROBO_PSX_PS2_CONTROLLER_H__
 
 //-------------------------------------------------------------------------------------------------
 
@@ -278,6 +280,7 @@ int PS2Controller::adjustJoystickY(int nJoyY) {
 
 //-------------------------------------------------------------------------------------------------
 
+#ifndef __POKEROBO_PSX_PS2_CONTROLLER_H__
 #if __JOYSTICK_MESSAGE_STRUCTURE__ == CONTROL_PACKET_V1
 const uint8_t PS2ControlPacket::messageSize = 0 // SIGNATURE
     + sizeof(uint16_t) // pressingFlags
@@ -449,6 +452,7 @@ int PS2Listener::check() {
 
   return ok;
 }
+#endif//__POKEROBO_PSX_PS2_CONTROLLER_H__
 
 uint32_t PS2EventDispatcher::process(PS2ControlPacket* packet) {
   uint16_t pressed = processButtonPress(packet->getPressingFlags());
