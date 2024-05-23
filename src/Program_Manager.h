@@ -3,7 +3,7 @@
 
 #include "Display_Adapter.h"
 #include "Input_Listener.h"
-#include "Program_Collection.h"
+#include "Pokerobo_RCB_client.h"
 
 #define DASHBOARD_FLOW_CONFIGURING            1
 #define DASHBOARD_FLOW_DISPATCHING            2

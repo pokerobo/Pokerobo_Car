@@ -2,9 +2,8 @@
 #define __POKEROBO_CAR_EVENT_PROCESSOR_H__
 
 #include "Commons.h"
-
-#include "Joystick_Action.h"
 #include "Moving_Command.h"
+#include "Pokerobo_RCB_client.h"
 
 class EventProcessor {
   public:

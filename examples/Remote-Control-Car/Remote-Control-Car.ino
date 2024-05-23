@@ -14,7 +14,6 @@ RemoteControlCar remoteControlCar(" Remote Control Car");
 ProgramManager programManager;
 
 void setup() {
-  while (!Serial) delay(100); // Wait for the serial connection to be establised.
   Serial.begin(57600);
 
   #if __LOADING_LOG_ENABLED__

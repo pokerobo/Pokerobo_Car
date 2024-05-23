@@ -2,7 +2,7 @@
 #define __POKEROBO_CAR_MOVING_COMMAND_H__
 
 #include "Commons.h"
-#include "Message_Exchange.h"
+#include "Pokerobo_RCB_client.h"
 
 class MovingCommand: public MessageInterface {
   public:

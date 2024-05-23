@@ -3,13 +3,11 @@
 
 #include "Commons.h"
 #include "Display_Adapter.h"
-#include "Program_Capsule.h"
-#include "Joystick_Action.h"
 #include "Moving_Command.h"
-
 #include "Line_Detector.h"
-#include "Pedestal_Group.h"
 #include "RoboCar_Handler.h"
+#include "Pokerobo_Arm.h"
+#include "Pokerobo_RCB_client.h"
 
 class RemoteControlCar: public ProgramCapsule {
   public:

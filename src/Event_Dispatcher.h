@@ -2,10 +2,7 @@
 #define __POKEROBO_CAR_EVENT_DISPATCHER_H__
 
 #include "Commons.h"
-
 #include "Event_Processor.h"
-
-#include "Joystick_Action.h"
 #include "Moving_Command.h"
 
 #if (CONTROLLER_ROBOCAR)
@@ -13,7 +10,7 @@
 #endif
 
 #if (CONTROLLER_PEDESTAL)
-#include "Pedestal_Group.h"
+#include "Pokerobo_Arm.h"
 #endif
 
 #define PROGRAM_CARDUINO_STATE_IDLE         1
