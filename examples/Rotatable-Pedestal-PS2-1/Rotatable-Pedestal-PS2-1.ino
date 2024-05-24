@@ -17,19 +17,11 @@ EventDispatcher eventDispatcher;
 void setup() {
   Serial.begin(57600);
 
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Starting");
-  #endif
-
   pedestalGroup.begin();
   eventDispatcher.set(&pedestalGroup);
 
   ps2Controller.begin();
   ps2Controller.set(&eventDispatcher);
-
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Done!");
-  #endif
 }
 
 void loop() {

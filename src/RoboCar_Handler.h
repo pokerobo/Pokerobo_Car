@@ -16,7 +16,7 @@
 #include "Moving_Resolver.h"
 #include "Moving_Command.h"
 
-class RoboCarHandler {
+class RoboCarHandler: public CarDebugLoggable {
   public:
     int begin();
     bool isActive();
@@ -30,7 +30,6 @@ class RoboCarHandler {
   private:
     bool _active = false;
     MovingResolver* _movingResolver = NULL;
-    bool _debugEnabled = true;
 };
 
 #endif

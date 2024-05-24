@@ -48,7 +48,7 @@ int PS2Controller::processStartButtonPress() {
   if(ps2x.Button(PSB_START)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "START", " is pushed");
+      getLogger()->debug("PSB", "_", "START", " is pushed");
     }
     #endif
     if (_onStartButtonPressed) {
@@ -68,7 +68,7 @@ int PS2Controller::processSelectButtonPress() {
   if(ps2x.Button(PSB_SELECT)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "SELECT", " is pushed");
+      getLogger()->debug("PSB", "_", "SELECT", " is pushed");
     }
     #endif
     if (_onSelectButtonPressed) {
@@ -88,7 +88,7 @@ int PS2Controller::processDPadUpButtonPress() {
   if(ps2x.Button(PSB_PAD_UP)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "PAD", "_", "UP", " is pushed");
+      getLogger()->debug("PSB", "_", "PAD", "_", "UP", " is pushed");
     }
     #endif
     if (_onDPadUpButtonPressed) {
@@ -108,7 +108,7 @@ int PS2Controller::processDPadRightButtonPress() {
   if(ps2x.Button(PSB_PAD_RIGHT)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "PAD", "_", "RIGHT", " is pushed");
+      getLogger()->debug("PSB", "_", "PAD", "_", "RIGHT", " is pushed");
     }
     #endif
     if (_onDPadRightButtonPressed) {
@@ -128,7 +128,7 @@ int PS2Controller::processDPadDownButtonPress() {
   if(ps2x.Button(PSB_PAD_DOWN)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "PAD", "_", "DOWN", " is pushed");
+      getLogger()->debug("PSB", "_", "PAD", "_", "DOWN", " is pushed");
     }
     #endif
     if (_onDPadDownButtonPressed) {
@@ -148,7 +148,7 @@ int PS2Controller::processDPadLeftButtonPress() {
   if(ps2x.Button(PSB_PAD_LEFT)) {
     #if __RUNNING_LOG_ENABLED__
     if (isDebugEnabled()) {
-      debugLog("PSB", "_", "PAD", "_", "LEFT", " is pushed");
+      getLogger()->debug("PSB", "_", "PAD", "_", "LEFT", " is pushed");
     }
     #endif
     if (_onDPadLeftButtonPressed) {
@@ -162,7 +162,11 @@ int PS2Controller::processDPadLeftButtonPress() {
 }
 
 bool PS2Controller::isDebugEnabled() {
-  return PS2Controller_::isDebugEnabled();
+  return CarDebugLoggable::isDebugEnabled();
+}
+
+CarDebugLogger* PS2Controller::getLogger() {
+  return CarDebugLoggable::getLogger();
 }
 
 bool PS2Controller::isJoystickChanged(int nJoyX, int nJoyY) {

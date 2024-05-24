@@ -29,10 +29,6 @@ HangingDetector hangingDetector;
 void setup() {
   Serial.begin(57600);
 
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Starting");
-  #endif
-
   #if (CONTROLLER_ROBOCAR)
   roboCarHandler.begin();
   roboCarHandler.set(&movingResolver);
@@ -54,10 +50,6 @@ void setup() {
   rf24Listener.begin();
   rf24Listener.set(&hangingDetector);
   rf24Listener.set(&eventDispatcher);
-  #endif
-
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Done!");
   #endif
 }
 

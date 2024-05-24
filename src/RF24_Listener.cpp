@@ -9,7 +9,7 @@ RF24* _radio = NULL;
 RF24Listener::RF24Listener(uint64_t address, bool debugEnabled) {
   _radio = new RF24(__RF24_CE_PIN__, __RF24_CSN_PIN__);  // CE, CSN
   _address = address;
-  _debugEnabled = debugEnabled;
+  setDebugEnabled(debugEnabled);
 }
 
 void RF24Listener::begin() {
@@ -35,7 +35,9 @@ bool RF24Listener::available() {
   if (!ok) {
     bool connected = _radio->isChipConnected();
     if (!connected) {
-      debugLog("RF24 is not connected");
+      if (isDebugEnabled()) {
+        getLogger()->debug("RF24 is not connected");
+      }
     }
   }
   if (_hangingDetector) {
@@ -81,7 +83,7 @@ int RF24Listener::read(MasterContext* context, JoystickAction* action, MovingCom
   if (isDebugEnabled()) {
     if (ok) {
       char c_[11], b_[7], t_[7], x_[7], y_[7];
-      debugLog("#", ltoa(action->getExtras(), c_, 10), " - ",
+      getLogger()->debug("#", ltoa(action->getExtras(), c_, 10), " - ",
           "pressing", "Flags", ": ", itoa(action->getPressingFlags(), b_, 10), "; ",
           "toggling", "Flags", ": ", itoa(action->getTogglingFlags(), t_, 10), "; ",
           "X", ": ", itoa(action->getX(), x_, 10), "; ",
@@ -120,7 +122,11 @@ int RF24Listener::loop() {
 }
 
 bool RF24Listener::isDebugEnabled() {
-  return _debugEnabled;
+  return CarDebugLoggable::isDebugEnabled();
+}
+
+CarDebugLogger* RF24Listener::getLogger() {
+  return CarDebugLoggable::getLogger();
 }
 
 bool RF24Listener::isJoystickChanged(int nJoyX, int nJoyY) {

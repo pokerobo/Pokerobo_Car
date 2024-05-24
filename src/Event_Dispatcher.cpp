@@ -154,8 +154,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_START_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "START", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "START", " is pushed");
     }
     #endif
     if (_onStartButtonPressed != NULL) {
@@ -168,8 +168,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_SELECT_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "SELECT", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "SELECT", " is pushed");
     }
     #endif
     if (_onSelectButtonPressed != NULL) {
@@ -182,8 +182,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_ANALOG_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "ANALOG", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "ANALOG", " is pushed");
     }
     #endif
     if (_onAnalogButtonPressed != NULL) {
@@ -196,8 +196,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_UP_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "PAD", "_", "UP", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "PAD", "_", "UP", " is pushed");
     }
     #endif
     if (_onDPadUpButtonPressed != NULL) {
@@ -210,8 +210,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_RIGHT_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "PAD", "_", "RIGHT", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "PAD", "_", "RIGHT", " is pushed");
     }
     #endif
     if (_onDPadRightButtonPressed != NULL) {
@@ -224,8 +224,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_DOWN_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "PAD", "_", "DOWN", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "PAD", "_", "DOWN", " is pushed");
     }
     #endif
     if (_onDPadDownButtonPressed != NULL) {
@@ -238,8 +238,8 @@ uint16_t EventDispatcher::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_LEFT_BUTTON)) {
     #if __DISPATCHER_RUNNING_LOG__
-    if (_debugEnabled) {
-      debugLog("JOY", "_", "PAD", "_", "LEFT", " is pushed");
+    if (isDebugEnabled()) {
+      getLogger()->debug("JOY", "_", "PAD", "_", "LEFT", " is pushed");
     }
     #endif
     if (_onDPadLeftButtonPressed != NULL) {
@@ -270,12 +270,12 @@ int EventDispatcher::processJoystickChange(int nJoyX, int nJoyY, char label) {
   #endif
 
   #if __DISPATCHER_RUNNING_LOG__
-  if (_debugEnabled) {
+  if (isDebugEnabled()) {
     char l_[2] = { 'L', '\0' };
-    debugLog("Event", "Trigger", "::", "process", "JoystickChange", "()", " - ", l_, ": ");
+    getLogger()->debug("Event", "Trigger", "::", "process", "JoystickChange", "()", " - ", l_, ": ");
     char x_[7], y_[7];
-    debugLog(" - ", "X", ": ", itoa(nJoyX, x_, 10));
-    debugLog(" - ", "Y", ": ", itoa(nJoyY, y_, 10));
+    getLogger()->debug(" - ", "X", ": ", itoa(nJoyX, x_, 10));
+    getLogger()->debug(" - ", "Y", ": ", itoa(nJoyY, y_, 10));
   }
   #endif
 
@@ -300,9 +300,9 @@ int EventDispatcher::processJoystickChange(int nJoyX, int nJoyY, char label) {
   }
 
   #if __DISPATCHER_RUNNING_LOG__
-  if (_debugEnabled) {
+  if (isDebugEnabled()) {
     char l_[2] = { 'L', '\0' };
-    debugLog("Event", "Trigger", "::", "process", "JoystickChange", "()", " - ", l_, ": ", "not registered");
+    getLogger()->debug("Event", "Trigger", "::", "process", "JoystickChange", "()", " - ", l_, ": ", "not registered");
   }
   #endif
 

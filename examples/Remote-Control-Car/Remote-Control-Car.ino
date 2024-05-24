@@ -16,10 +16,6 @@ ProgramManager programManager;
 void setup() {
   Serial.begin(57600);
 
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Starting");
-  #endif
-
   displayAdapter.begin();
 
   roboCarHandler.set(&movingResolver);
@@ -42,10 +38,6 @@ void setup() {
   programManager.set(&hangingDetector);
   programManager.add(&remoteControlCar);
   programManager.begin();
-
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Done!");
-  #endif
 }
 
 void loop() {

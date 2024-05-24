@@ -44,7 +44,7 @@
 #define RF24_JOYSTICK_RANGE_X     255
 #define RF24_JOYSTICK_RANGE_Y     255
 
-class RF24Listener: public InputListener, InputController {
+class RF24Listener: public CarDebugLoggable, public InputListener, public InputController {
   public:
     RF24Listener(uint64_t address=__RF24_DEFAULT_ADDRESS__, bool debugEnabled=true);
     void begin();
@@ -55,12 +55,12 @@ class RF24Listener: public InputListener, InputController {
   protected:
     bool available();
     bool isDebugEnabled();
+    CarDebugLogger* getLogger();
     bool isJoystickChanged(int, int);
     int adjustJoystickX(int nJoyX);
     int adjustJoystickY(int nJoyY);
   private:
     uint64_t _address = __RF24_DEFAULT_ADDRESS__;
-    bool _debugEnabled;
     HangingDetector* _hangingDetector = NULL;
     EventProcessor* _eventProcessor = NULL;
 };

@@ -23,12 +23,7 @@ DancingPuppetCar dancingPuppetCar(" Remote Control Car");
 ProgramManager programManager;
 
 void setup() {
-  while (!Serial) delay(100); // Wait for the serial connection to be establised.
   Serial.begin(57600);
-
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Starting");
-  #endif
 
   displayAdapter.begin();
 
@@ -53,10 +48,6 @@ void setup() {
   programManager.set(&rf24Listener);
   programManager.add(&dancingPuppetCar);
   programManager.begin();
-
-  #if __LOADING_LOG_ENABLED__
-  debugLog("main", "()", " - ", "Done!");
-  #endif
 }
 
 void loop() {
