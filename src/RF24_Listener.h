@@ -4,7 +4,6 @@
 #include "Commons.h"
 #include "Input_Listener.h"
 #include "Input_Controller.h"
-#include "Event_Processor.h"
 
 #ifndef __RF24_LOADING_LOG__
 #define __RF24_LOADING_LOG__  __LOADING_LOG_ENABLED__
@@ -51,7 +50,6 @@ class RF24Listener: public CarDebugLoggable, public InputListener, public InputC
     int read(MasterContext* context, JoystickAction* action, MovingCommand* command);
     int loop();
     void set(HangingDetector* hangingDetector);
-    void set(EventProcessor* eventProcessor);
   protected:
     bool available();
     bool isDebugEnabled();
@@ -62,7 +60,6 @@ class RF24Listener: public CarDebugLoggable, public InputListener, public InputC
   private:
     uint64_t _address = __RF24_DEFAULT_ADDRESS__;
     HangingDetector* _hangingDetector = NULL;
-    EventProcessor* _eventProcessor = NULL;
 };
 
 #endif

@@ -1,13 +1,7 @@
 #ifndef __POKEROBO_CAR_EVENT_DISPATCHER_H__
 #define __POKEROBO_CAR_EVENT_DISPATCHER_H__
 
-#include "Commons.h"
 #include "Event_Processor.h"
-#include "Moving_Command.h"
-
-#if (CONTROLLER_ROBOCAR)
-#include "RoboCar_Handler.h"
-#endif
 
 #if (CONTROLLER_PEDESTAL)
 #include "Pokerobo_Arm.h"

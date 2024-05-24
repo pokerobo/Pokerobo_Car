@@ -105,11 +105,6 @@ int RF24Listener::loop() {
   int ok = read(&context, &action, &command);
 
   if (ok == 1) {
-    if (_eventProcessor != NULL) {
-      _eventProcessor->processEvents(&action, &command);
-      return 0xff;
-    }
-
     uint16_t pressed = processButtonPress(action.getPressingFlags());
     if (pressed) {
       return pressed;
@@ -148,8 +143,4 @@ int RF24Listener::adjustJoystickY(int nJoyY) {
 
 void RF24Listener::set(HangingDetector* hangingDetector) {
   _hangingDetector = hangingDetector;
-};
-
-void RF24Listener::set(EventProcessor* eventProcessor) {
-  _eventProcessor = eventProcessor;
 };
