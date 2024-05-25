@@ -3,10 +3,6 @@
 
 #include <Arduino.h>
 
-#define __POKEROBO_RCB_CLIENT_ENABLED__ 1
-
-#define __HCPCA9685_ENABLED__           1
-
 #define __LOADING_LOG_ENABLED__         1
 #define __RUNNING_LOG_ENABLED__         1
 
@@ -18,14 +14,8 @@
 
 #define  __DEBUG_LOG_RF24_LISTENER__    0
 
-#define __PS2_LOGGING_ENABLED__         1
-
 #define CONTROLLER_PEDESTAL             1
 #define CONTROLLER_ROBOCAR              1
-
-#define CONTROLLER_IR                   0
-#define CONTROLLER_IR_DEVICE_PANASONIC  0
-#define CONTROLLER_IR_DEVICE_SONY       0
 
 #define CONTROLLER_PS2                  2
 #define CONTROLLER_RF24                 24

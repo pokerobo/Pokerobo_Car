@@ -2,8 +2,8 @@
 #define __POKEROBO_CAR_INPUT_LISTENER_H__
 
 #include "Commons.h"
-#include "Moving_Command.h"
 #include "Pokerobo_RCB_client.h"
+#include "Moving_Command.h"
 
 class InputListener {
   public:

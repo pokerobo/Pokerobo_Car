@@ -83,32 +83,38 @@ void RoboCarHandler::move(MovingCommand* packet) {
   if (packet == NULL) {
     return;
   }
+  move(packet->getLeftDirection(), packet->getLeftSpeed(),
+    packet->getRightSpeed(), packet->getRightDirection());
+}
 
+void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection) {
   uint8_t in1Val = LOW;
   uint8_t in2Val = LOW;
   uint8_t in3Val = LOW;
   uint8_t in4Val = LOW;
 
-  switch (packet->getLeftDirection()) {
+  switch (leftDirection) {
     case 1:
       in1Val = HIGH;
       break;
+    case -1:
     case 2:
       in2Val = HIGH;
       break;
   }
 
-  switch (packet->getRightDirection()) {
+  switch (rightDirection) {
     case 1:
       in3Val = HIGH;
       break;
+    case -1:
     case 2:
       in4Val = HIGH;
       break;
   }
 
-  int enaVal = packet->getLeftSpeed();
-  int enbVal = packet->getRightSpeed();
+  int enaVal = leftSpeed;
+  int enbVal = rightSpeed;
 
   #if __ROBOCAR_RUNNING_LOG__
   if (isDebugEnabled()) {
