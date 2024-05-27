@@ -1,4 +1,4 @@
-#include "Pokerobo_Car.h"
+#include "RoboCar_DancingPuppet.h"
 
 DisplayAdapter displayAdapter;
 
@@ -12,11 +12,10 @@ MovingResolver movingResolver;
 PedestalHandler pedestalHandler1(4, 5);
 PedestalHandler pedestalHandler3(8, 9);
 
-PedestalHandler* pedestalHandlers[PEDESTALS_MAX] = {
+PedestalGroup pedestalGroup(
   &pedestalHandler1,
-  &pedestalHandler3,
-};
-PedestalGroup pedestalGroup(pedestalHandlers);
+  &pedestalHandler3
+);
 
 DancingPuppetCar dancingPuppetCar(" Remote Control Car");
 

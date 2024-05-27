@@ -2,9 +2,9 @@
 
 // Motor A connections
 
-#define IN_2    8
-#define IN_1    7
 #define EN_A    6
+#define IN_1    7
+#define IN_2    8
 
 // Motor B connections
 #define IN_3    5

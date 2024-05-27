@@ -7,3 +7,4 @@
 #include "Display_Adapter.h"
 #include "Program_Manager.h"
 #include "RoboCar_Programs.h"
+#include "RoboCar_LineFollower.h"
