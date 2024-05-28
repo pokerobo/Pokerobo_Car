@@ -32,6 +32,15 @@ class InputController {
     virtual bool isJoystickChanged(int, int);
     virtual int adjustJoystickX(int nJoyX);
     virtual int adjustJoystickY(int nJoyY);
+    virtual void debugStartButtonPressed_();
+    virtual void debugSelectButtonPressed_();
+    virtual void debugAnalogButtonPressed_();
+    virtual void debugDPadUpButtonPressed_();
+    virtual void debugDPadRightButtonPressed_();
+    virtual void debugDPadDownButtonPressed_();
+    virtual void debugDPadLeftButtonPressed_();
+    virtual void debugJoystickChangeInvoked_(int nJoyX, int nJoyY, char label);
+    virtual void debugJoystickChangeBypassed_(int nJoyX, int nJoyY, char label);
     void (*_onAnalogButtonPressed)();
     void (*_onStartButtonPressed)();
     void (*_onSelectButtonPressed)();
@@ -44,6 +53,24 @@ class InputController {
     void (*_onRightJoystickChanged)(int, int);
   private:
     uint16_t _clickingTrail;
+};
+
+class InputProcessorVerbose: public InputController {
+  protected:
+    using InputController::isDebugEnabled;
+    using InputController::getLogger;
+    using InputController::isJoystickChanged;
+    using InputController::adjustJoystickX;
+    using InputController::adjustJoystickY;
+    void debugStartButtonPressed_();
+    void debugSelectButtonPressed_();
+    void debugAnalogButtonPressed_();
+    void debugDPadUpButtonPressed_();
+    void debugDPadRightButtonPressed_();
+    void debugDPadDownButtonPressed_();
+    void debugDPadLeftButtonPressed_();
+    void debugJoystickChangeInvoked_(int nJoyX, int nJoyY, char label);
+    void debugJoystickChangeBypassed_(int nJoyX, int nJoyY, char label);
 };
 
 #endif

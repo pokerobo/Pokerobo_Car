@@ -65,9 +65,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_START_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "START", " is pushed");
-    }
+    debugStartButtonPressed_();
     #endif
     if (_onStartButtonPressed != NULL) {
       _onStartButtonPressed();
@@ -77,9 +75,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_SELECT_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "SELECT", " is pushed");
-    }
+    debugSelectButtonPressed_();
     #endif
     if (_onSelectButtonPressed != NULL) {
       _onSelectButtonPressed();
@@ -89,9 +85,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_ANALOG_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "ANALOG", " is pushed");
-    }
+    debugAnalogButtonPressed_();
     #endif
     if (_onAnalogButtonPressed != NULL) {
       _onAnalogButtonPressed();
@@ -101,9 +95,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_UP_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "PAD", "_", "UP", " is pushed");
-    }
+    debugDPadUpButtonPressed_();
     #endif
     if (_onDPadUpButtonPressed != NULL) {
       _onDPadUpButtonPressed();
@@ -113,9 +105,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_RIGHT_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "PAD", "_", "RIGHT", " is pushed");
-    }
+    debugDPadRightButtonPressed_();
     #endif
     if (_onDPadRightButtonPressed != NULL) {
       _onDPadRightButtonPressed();
@@ -125,9 +115,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_DOWN_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "PAD", "_", "DOWN", " is pushed");
-    }
+    debugDPadDownButtonPressed_();
     #endif
     if (_onDPadDownButtonPressed != NULL) {
       _onDPadDownButtonPressed();
@@ -137,9 +125,7 @@ uint16_t InputController::processButtonPress(uint16_t pressed) {
 
   if(checkButtonPress(pressed, MASK_LEFT_BUTTON)) {
     #if __INPUT_RUNNING_LOG__
-    if (isDebugEnabled()) {
-      getLogger()->debug("JOY", "_", "PAD", "_", "LEFT", " is pushed");
-    }
+    debugDPadLeftButtonPressed_();
     #endif
     if (_onDPadLeftButtonPressed != NULL) {
       _onDPadLeftButtonPressed();
@@ -159,13 +145,7 @@ int InputController::processJoystickChange(int nJoyX, int nJoyY, char label) {
   }
 
   #if __INPUT_RUNNING_LOG__
-  if (isDebugEnabled()) {
-    char l_[2] = { label, '\0' };
-    getLogger()->debug("Input", "Controller", "::", "process", "JoystickChange", "()", " - ", l_, ": ");
-    char x_[7], y_[7];
-    getLogger()->debug(" - ", "X", ": ", itoa(nJoyX, x_, 10));
-    getLogger()->debug(" - ", "Y", ": ", itoa(nJoyY, y_, 10));
-  }
+  debugJoystickChangeInvoked_(nJoyX, nJoyY, label);
   #endif
 
   if (label == 'L') {
@@ -183,11 +163,96 @@ int InputController::processJoystickChange(int nJoyX, int nJoyY, char label) {
   }
 
   #if __INPUT_RUNNING_LOG__
+  debugJoystickChangeBypassed_(nJoyX, nJoyY, label);
+  #endif
+
+  return -1;
+}
+
+void InputController::debugStartButtonPressed_() {
+}
+
+void InputController::debugSelectButtonPressed_() {
+}
+
+void InputController::debugAnalogButtonPressed_() { 
+}
+
+void InputController::debugDPadUpButtonPressed_() {
+}
+
+void InputController::debugDPadRightButtonPressed_() {
+}
+
+void InputController::debugDPadDownButtonPressed_() {
+}
+
+void InputController::debugDPadLeftButtonPressed_() {
+}
+
+void InputController::debugJoystickChangeInvoked_(int nJoyX, int nJoyY, char label) {
+}
+
+void InputController::debugJoystickChangeBypassed_(int nJoyX, int nJoyY, char label) {
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void InputProcessorVerbose::debugStartButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "START", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugSelectButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "SELECT", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugAnalogButtonPressed_() {  
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "ANALOG", " is pushed");
+  } 
+}
+
+void InputProcessorVerbose::debugDPadUpButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "PAD", "_", "UP", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugDPadRightButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "PAD", "_", "RIGHT", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugDPadDownButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "PAD", "_", "DOWN", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugDPadLeftButtonPressed_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("JOY", "_", "PAD", "_", "LEFT", " is pushed");
+  }
+}
+
+void InputProcessorVerbose::debugJoystickChangeInvoked_(int nJoyX, int nJoyY, char label) {
+  if (isDebugEnabled()) {
+    char l_[2] = { label, '\0' };
+    getLogger()->debug("Input", "Controller", "::", "process", "JoystickChange", "()", " - ", l_, ": ");
+    char x_[7], y_[7];
+    getLogger()->debug(" - ", "X", ": ", itoa(nJoyX, x_, 10));
+    getLogger()->debug(" - ", "Y", ": ", itoa(nJoyY, y_, 10));
+  }
+}
+
+void InputProcessorVerbose::debugJoystickChangeBypassed_(int nJoyX, int nJoyY, char label) {
   if (isDebugEnabled()) {
     char l_[2] = { label, '\0' };
     getLogger()->debug("Input", "Controller", "::", "process", "JoystickChange", "()", " - ", l_, ": ", "not registered");
   }
-  #endif
-
-  return -1;
 }

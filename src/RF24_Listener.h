@@ -57,9 +57,17 @@ class RF24Listener: public CarDebugLoggable, public InputListener, public InputC
     bool isJoystickChanged(int, int);
     int adjustJoystickX(int nJoyX);
     int adjustJoystickY(int nJoyY);
+    virtual void debugAvailable_(bool& tx_ok, bool& tx_fail, bool& rx_ready, bool ok);
+    virtual void debugJoystickControl_(bool ok, JoystickAction* action);
   private:
     uint64_t _address = __RF24_DEFAULT_ADDRESS__;
     HangingDetector* _hangingDetector = NULL;
+};
+
+class RF24ListenerVerbose: public RF24Listener {
+  protected:
+    void debugAvailable_(bool& tx_ok, bool& tx_fail, bool& rx_ready, bool ok);
+    void debugJoystickControl_(bool ok, JoystickAction* action);
 };
 
 #endif

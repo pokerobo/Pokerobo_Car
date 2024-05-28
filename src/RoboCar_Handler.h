@@ -28,9 +28,24 @@ class RoboCarHandler: public CarDebugLoggable {
     void move(int x, int y);
     void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection);
     void move(MovingCommand* packet);
+  protected:
+    virtual void debugTurnOn_();
+    virtual void debugTurnOff_();
+    virtual void debugStop_();
+    virtual void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+        int enaVal, int enbVal);
   private:
     bool _active = false;
     MovingResolver* _movingResolver = NULL;
+};
+
+class RoboCarHandlerVerbose: public RoboCarHandler {
+  protected:
+    void debugTurnOn_();
+    void debugTurnOff_();
+    void debugStop_();
+    void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+        int enaVal, int enbVal);
 };
 
 #endif

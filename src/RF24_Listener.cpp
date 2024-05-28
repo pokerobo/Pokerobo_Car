@@ -24,13 +24,7 @@ bool RF24Listener::available() {
   _radio->whatHappened(tx_ok, tx_fail, rx_ready);
   bool ok = _radio->available();
   #if __DEBUG_LOG_RF24_LISTENER__
-  if (isDebugEnabled()) {
-    Serial.print("tx_ok"), Serial.print(':'), Serial.print(tx_ok), Serial.print(';'),
-    Serial.print("tx_fail"), Serial.print(':'), Serial.print(tx_fail), Serial.print(';'),
-    Serial.print("rx_ready"), Serial.print(':'), Serial.print(rx_ready), Serial.print(';'),
-    Serial.print("available()"), Serial.print(':'), Serial.print(ok),
-    Serial.println();
-  }
+  debugAvailable_(tx_ok, tx_fail, rx_ready, ok);
   #endif
   if (!ok) {
     bool connected = _radio->isChipConnected();
@@ -80,18 +74,7 @@ int RF24Listener::read(MasterContext* context, JoystickAction* action, MovingCom
   }
 
   #if __DEBUG_LOG_RF24_LISTENER__
-  if (isDebugEnabled()) {
-    if (ok) {
-      char c_[11], b_[7], t_[7], x_[7], y_[7];
-      getLogger()->debug("#", ltoa(action->getExtras(), c_, 10), " - ",
-          "pressing", "Flags", ": ", itoa(action->getPressingFlags(), b_, 10), "; ",
-          "toggling", "Flags", ": ", itoa(action->getTogglingFlags(), t_, 10), "; ",
-          "X", ": ", itoa(action->getX(), x_, 10), "; ",
-          "Y", ": ", itoa(action->getY(), y_, 10));
-    } else {
-      
-    }
-  }
+  debugJoystickControl_(ok, action);
   #endif
 
   return ok ? 1 : -1;
@@ -144,3 +127,36 @@ int RF24Listener::adjustJoystickY(int nJoyY) {
 void RF24Listener::set(HangingDetector* hangingDetector) {
   _hangingDetector = hangingDetector;
 };
+
+void RF24Listener::debugAvailable_(bool& tx_ok, bool& tx_fail, bool& rx_ready, bool ok) {
+}
+
+void RF24Listener::debugJoystickControl_(bool ok, JoystickAction* action) {
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void RF24ListenerVerbose::debugAvailable_(bool& tx_ok, bool& tx_fail, bool& rx_ready, bool ok) {
+  if (isDebugEnabled()) {
+    Serial.print("tx_ok"), Serial.print(':'), Serial.print(tx_ok), Serial.print(';'),
+    Serial.print("tx_fail"), Serial.print(':'), Serial.print(tx_fail), Serial.print(';'),
+    Serial.print("rx_ready"), Serial.print(':'), Serial.print(rx_ready), Serial.print(';'),
+    Serial.print("available()"), Serial.print(':'), Serial.print(ok),
+    Serial.println();
+  }
+}
+
+void RF24ListenerVerbose::debugJoystickControl_(bool ok, JoystickAction* action) {
+  if (isDebugEnabled()) {
+    if (ok) {
+      char c_[11], b_[7], t_[7], x_[7], y_[7];
+      getLogger()->debug("#", ltoa(action->getExtras(), c_, 10), " - ",
+          "pressing", "Flags", ": ", itoa(action->getPressingFlags(), b_, 10), "; ",
+          "toggling", "Flags", ": ", itoa(action->getTogglingFlags(), t_, 10), "; ",
+          "X", ": ", itoa(action->getX(), x_, 10), "; ",
+          "Y", ": ", itoa(action->getY(), y_, 10));
+    } else {
+      
+    }
+  }
+}

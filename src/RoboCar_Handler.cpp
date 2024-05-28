@@ -41,17 +41,13 @@ bool RoboCarHandler::isActive() {
 void RoboCarHandler::turnOn() {
   _active = true;
   #if __ROBOCAR_RUNNING_LOG__
-  if (isDebugEnabled()) {
-    getLogger()->debug("RoboCarHandler", "::", "turnOn", "()");
-  }
+  debugTurnOn_();
   #endif
 }
 
 void RoboCarHandler::turnOff() {
   #if __ROBOCAR_RUNNING_LOG__
-  if (isDebugEnabled()) {
-    getLogger()->debug("RoboCarHandler", "::", "turnOff", "()");
-  }
+  debugTurnOff_();
   #endif
   stop();
   _active = false;
@@ -117,17 +113,7 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
   int enbVal = rightSpeed;
 
   #if __ROBOCAR_RUNNING_LOG__
-  if (isDebugEnabled()) {
-    char num_[7];
-    getLogger()->debug(" - ", "active", ": ", _active ? "On" : "Off");
-    getLogger()->debug(" - ", "IN_1", ": ", itoa(in1Val, num_, 10));
-    getLogger()->debug(" - ", "IN_2", ": ", itoa(in2Val, num_, 10));
-    getLogger()->debug(" - ", "IN_3", ": ", itoa(in3Val, num_, 10));
-    getLogger()->debug(" - ", "IN_4", ": ", itoa(in4Val, num_, 10));
-
-    getLogger()->debug(" - ", "EN_A", ": ", itoa(enaVal, num_, 10));
-    getLogger()->debug(" - ", "EN_B", ": ", itoa(enbVal, num_, 10));
-  }
+  debugWriteL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
   #endif
 
   digitalWrite(IN_1, in1Val);
@@ -149,8 +135,54 @@ void RoboCarHandler::stop() {
   analogWrite(EN_B, 0);
 
   #if __ROBOCAR_RUNNING_LOG__
+  debugStop_();
+  #endif
+}
+
+void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    int enaVal, int enbVal) {
+}
+
+void RoboCarHandler::debugTurnOn_() {
+}
+
+void RoboCarHandler::debugTurnOff_() {
+}
+
+void RoboCarHandler::debugStop_() {
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void RoboCarHandlerVerbose::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    int enaVal, int enbVal) {
+  if (isDebugEnabled()) {
+    char num_[7];
+    getLogger()->debug(" - ", "active", ": ", isActive() ? "On" : "Off");
+    getLogger()->debug(" - ", "IN_1", ": ", itoa(in1Val, num_, 10));
+    getLogger()->debug(" - ", "IN_2", ": ", itoa(in2Val, num_, 10));
+    getLogger()->debug(" - ", "IN_3", ": ", itoa(in3Val, num_, 10));
+    getLogger()->debug(" - ", "IN_4", ": ", itoa(in4Val, num_, 10));
+
+    getLogger()->debug(" - ", "EN_A", ": ", itoa(enaVal, num_, 10));
+    getLogger()->debug(" - ", "EN_B", ": ", itoa(enbVal, num_, 10));
+  }
+}
+
+void RoboCarHandlerVerbose::debugTurnOn_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("RoboCarHandler", "::", "turnOn", "()");
+  }
+}
+
+void RoboCarHandlerVerbose::debugTurnOff_() {
+  if (isDebugEnabled()) {
+    getLogger()->debug("RoboCarHandler", "::", "turnOff", "()");
+  }
+}
+
+void RoboCarHandlerVerbose::debugStop_() {
   if (isDebugEnabled()) {
     getLogger()->debug("RoboCarHandler", "::", "stop", "()");
   }
-  #endif
 }
