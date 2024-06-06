@@ -1,7 +1,6 @@
 #include "RoboCar_Handler.h"
 
 // Motor A connections
-
 #define EN_A    6
 #define IN_1    7
 #define IN_2    8
@@ -61,7 +60,7 @@ void RoboCarHandler::flip() {
   }
 }
 
-void RoboCarHandler::move(int x, int y) {
+void RoboCarHandler::move(int x, int y, bool reversed) {
   if (!_movingResolver) {
     return;
   }
@@ -70,7 +69,7 @@ void RoboCarHandler::move(int x, int y) {
     x = y = 0;
   }
 
-  MovingCommand packet;
+  MovingCommand packet(reversed);
   _movingResolver->resolve(&packet, x, y);
   move(&packet);
 }
@@ -79,11 +78,12 @@ void RoboCarHandler::move(MovingCommand* packet) {
   if (packet == NULL) {
     return;
   }
-  move(packet->getLeftDirection(), packet->getLeftSpeed(),
-    packet->getRightSpeed(), packet->getRightDirection());
+  move(packet->getLeftDirection(), packet->getLeftSpeed(), packet->getRightSpeed(), packet->getRightDirection(),
+    packet->isReversed());
 }
 
-void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection) {
+void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection,
+    bool reversed) {
   uint8_t in1Val = LOW;
   uint8_t in2Val = LOW;
   uint8_t in3Val = LOW;
@@ -111,6 +111,16 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
 
   int enaVal = leftSpeed;
   int enbVal = rightSpeed;
+
+  if (reversed) {
+    in1Val = HIGH - in1Val;
+    in2Val = HIGH - in2Val;
+    in3Val = HIGH - in3Val;
+    in4Val = HIGH - in4Val;
+    int tmpVal = enaVal;
+    enaVal = enbVal;
+    enbVal = tmpVal;
+  }
 
   #if __ROBOCAR_RUNNING_LOG__
   debugWriteL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);

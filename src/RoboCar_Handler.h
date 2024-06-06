@@ -25,8 +25,8 @@ class RoboCarHandler: public CarDebugLoggable {
     void flip();
     void stop();
     void set(MovingResolver* movingResolver);
-    void move(int x, int y);
-    void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection);
+    void move(int x, int y, bool reversed = false);
+    void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection, bool reversed = false);
     void move(MovingCommand* packet);
   protected:
     virtual void debugTurnOn_();

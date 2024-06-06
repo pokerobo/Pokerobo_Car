@@ -62,6 +62,7 @@ class RF24Listener: public CarDebugLoggable, public InputListener, public InputC
   private:
     uint64_t _address = __RF24_DEFAULT_ADDRESS__;
     HangingDetector* _hangingDetector = NULL;
+    void* _radioRef = NULL;
 };
 
 class RF24ListenerVerbose: public RF24Listener {

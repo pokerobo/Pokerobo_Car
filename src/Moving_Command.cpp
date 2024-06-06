@@ -4,7 +4,13 @@ const uint8_t MovingCommand::messageSize = sizeof(uint8_t) +
     sizeof(uint8_t) +
     sizeof(uint8_t);
 
-MovingCommand::MovingCommand(int leftSpeed, byte leftDirection, int rightSpeed, byte rightDirection) {
+MovingCommand::MovingCommand(bool reversed) {
+  _reversed = reversed;
+}
+
+MovingCommand::MovingCommand(int leftSpeed, byte leftDirection, int rightSpeed, byte rightDirection,
+    bool reversed) {
+  _reversed = reversed;
   update(leftSpeed, leftDirection, rightSpeed, rightDirection);
 }
 
@@ -31,6 +37,10 @@ byte MovingCommand::getRightDirection() {
   return _RightDirection;
 }
 
+bool MovingCommand::isReversed() {
+  return _reversed;
+}
+
 uint8_t MovingCommand::length() {
   return messageSize;
 }
@@ -43,6 +53,7 @@ void* MovingCommand::deserialize(uint8_t* buf) {
   uint8_t directionFlags = buf[0];
   _LeftDirection = directionFlags & 0b0011;
   _RightDirection = (directionFlags & 0b1100) >> 2;
+  _reversed = (directionFlags & 0b10000000) != 0;
   _LeftSpeed = buf[1];
   _RightSpeed = buf[2];
 

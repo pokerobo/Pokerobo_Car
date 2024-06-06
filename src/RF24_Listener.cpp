@@ -4,15 +4,15 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
-RF24* _radio = NULL;
-
 RF24Listener::RF24Listener(uint64_t address, bool debugEnabled) {
-  _radio = new RF24(__RF24_CE_PIN__, __RF24_CSN_PIN__);  // CE, CSN
+  RF24* _radio = new RF24(__RF24_CE_PIN__, __RF24_CSN_PIN__);
+  _radioRef = (void*)_radio;
   _address = address;
   setDebugEnabled(debugEnabled);
 }
 
 void RF24Listener::begin() {
+  RF24* _radio = (RF24*)_radioRef;
   _radio->begin();
   // _radio->setRetries(5, 15);
   _radio->openReadingPipe(0, _address);
@@ -20,6 +20,7 @@ void RF24Listener::begin() {
 }
 
 bool RF24Listener::available() {
+  RF24* _radio = (RF24*)_radioRef;
   bool tx_ok, tx_fail, rx_ready;
   _radio->whatHappened(tx_ok, tx_fail, rx_ready);
   bool ok = _radio->available();
@@ -44,6 +45,8 @@ int RF24Listener::read(MasterContext* context, JoystickAction* action, MovingCom
   if (!available()) {
     return 0;
   }
+
+  RF24* _radio = (RF24*)_radioRef;
   uint8_t msg[__RF24_MESSAGE_LENGTH__] = {0};
   _radio->read(&msg, sizeof(msg));
 

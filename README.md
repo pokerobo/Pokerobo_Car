@@ -7,9 +7,9 @@ This project is under construction.
 
 The dependencies:
 
-* RF24 (required)
-* LiquidCrystal_I2C (required)
-* HCPCA9685 (optional)
-* PS2X_lib (optional)
+* LiquidCrystal I2C (required)
 * pcf8574 (optional)
-* IRremote (optional)
+* Pokerobo_RCB (required)
+* Pokerobo_Arm (optional)
+* Pokerobo_IRx (optional)
+* Pokerobo_PSx (optional)
