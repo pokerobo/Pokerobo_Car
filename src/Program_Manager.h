@@ -10,7 +10,9 @@
 
 class ProgramManager {
   public:
-    ProgramManager();
+    ProgramManager(InputListener* inputListener=NULL,
+        DisplayAdapter* displayAdapter=NULL,
+        HangingDetector* hangingDetector=NULL);
     void set(InputListener* inputListener);
     void set(DisplayAdapter* displayAdapter);
     void set(HangingDetector* hangingDetector);

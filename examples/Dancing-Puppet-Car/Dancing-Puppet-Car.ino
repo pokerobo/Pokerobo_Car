@@ -2,7 +2,7 @@
 
 DisplayAdapter displayAdapter;
 
-const uint64_t address = 0x18580901LL;
+const uint64_t address = 0x18580900LL + 1;
 RF24Listener rf24Listener(address);
 HangingDetector hangingDetector;
 

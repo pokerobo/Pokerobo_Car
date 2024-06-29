@@ -13,6 +13,14 @@
 #define ROBOCAR_DEADZONE_BOUND_X    52
 #define ROBOCAR_DEADZONE_BOUND_Y    52
 
+RoboCarHandler::RoboCarHandler(MovingResolver* movingResolver) {
+  _movingResolver = movingResolver;
+}
+
+void RoboCarHandler::set(MovingResolver* movingResolver) {
+  _movingResolver = movingResolver;
+}
+
 int RoboCarHandler::begin() {
   // Set all the motor control pins to outputs
 	pinMode(EN_A, OUTPUT);
@@ -27,10 +35,6 @@ int RoboCarHandler::begin() {
 	digitalWrite(IN_2, LOW);
 	digitalWrite(IN_3, LOW);
 	digitalWrite(IN_4, LOW);
-}
-
-void RoboCarHandler::set(MovingResolver* movingResolver) {
-  _movingResolver = movingResolver;
 }
 
 bool RoboCarHandler::isActive() {
@@ -113,6 +117,14 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
   int enbVal = rightSpeed;
 
   if (reversed) {
+    /*
+    if (in1Val == HIGH) {
+      in1Val = LOW;
+    } else {
+      in1Val = HIGH;
+    }
+    */
+    // in1Val = (in1Val == HIGH) ? LOW : HIGH;
     in1Val = HIGH - in1Val;
     in2Val = HIGH - in2Val;
     in3Val = HIGH - in3Val;

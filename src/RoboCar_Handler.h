@@ -18,13 +18,14 @@
 
 class RoboCarHandler: public CarDebugLoggable {
   public:
+    RoboCarHandler(MovingResolver* movingResolver=NULL);
+    void set(MovingResolver* movingResolver);
     int begin();
     bool isActive();
     void turnOn();
     void turnOff();
     void flip();
     void stop();
-    void set(MovingResolver* movingResolver);
     void move(int x, int y, bool reversed = false);
     void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection, bool reversed = false);
     void move(MovingCommand* packet);
@@ -40,6 +41,8 @@ class RoboCarHandler: public CarDebugLoggable {
 };
 
 class RoboCarHandlerVerbose: public RoboCarHandler {
+  public:
+    using RoboCarHandler::RoboCarHandler;
   protected:
     void debugTurnOn_();
     void debugTurnOff_();

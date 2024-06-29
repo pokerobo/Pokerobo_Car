@@ -2,7 +2,12 @@
 
 #define PROGRAM_MENU_TOGGLE_BUTTON          MASK_ANALOG_BUTTON
 
-ProgramManager::ProgramManager() {
+ProgramManager::ProgramManager(InputListener* inputListener,
+      DisplayAdapter* displayAdapter,
+      HangingDetector* hangingDetector) {
+  _inputListener = inputListener;
+  _displayAdapter = displayAdapter;
+  _hangingDetector = hangingDetector;
   _programCollection = new ProgramCollection();
 }
 

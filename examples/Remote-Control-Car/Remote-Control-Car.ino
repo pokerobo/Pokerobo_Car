@@ -2,28 +2,25 @@
 
 DisplayAdapter displayAdapter;
 
-const uint64_t address = 0x18580901LL;
+const uint64_t address = 0x18580900LL + 1;
 RF24Listener rf24Listener(address);
 HangingDetector hangingDetector;
 
-RoboCarHandler roboCarHandler;
 MovingResolver movingResolver;
+RoboCarHandler roboCarHandler(&movingResolver);
 
-RemoteControlCar remoteControlCar(" Remote Control Car");
+RemoteControlCar remoteControlCar("Remote Control Car",
+    &displayAdapter, &roboCarHandler);
 
-ProgramManager programManager;
+ProgramManager programManager(&rf24Listener,
+    &displayAdapter, &hangingDetector);
 
 void setup() {
   Serial.begin(57600);
 
   displayAdapter.begin();
 
-  roboCarHandler.set(&movingResolver);
   roboCarHandler.begin();
-
-  remoteControlCar.set(&displayAdapter);
-  remoteControlCar.set(&roboCarHandler);
-  remoteControlCar.begin();
 
   hangingDetector.begin([] (void ()) {
     displayAdapter.clear();
@@ -33,9 +30,8 @@ void setup() {
 
   rf24Listener.begin();
 
-  programManager.set(&rf24Listener);
-  programManager.set(&displayAdapter);
-  programManager.set(&hangingDetector);
+  remoteControlCar.begin();
+
   programManager.add(&remoteControlCar);
   programManager.begin();
 }

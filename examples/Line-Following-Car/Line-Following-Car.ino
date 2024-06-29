@@ -2,7 +2,7 @@
 
 DisplayAdapter displayAdapter;
 
-RF24Listener rf24Listener(0x18580901LL);
+RF24Listener rf24Listener(0x18580900LL + 1);
 HangingDetector hangingDetector;
 
 RoboCarHandler roboCarHandler;
