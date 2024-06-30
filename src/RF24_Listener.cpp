@@ -41,6 +41,10 @@ bool RF24Listener::available() {
   return ok;
 }
 
+uint8_t RF24Listener::getShortAddress() {
+  return _address - 0x18580900LL;
+}
+
 int RF24Listener::read(MasterContext* context, JoystickAction* action, MovingCommand* command) {
   if (!available()) {
     return 0;

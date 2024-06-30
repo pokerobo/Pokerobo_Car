@@ -23,11 +23,11 @@ void setup() {
   roboCarHandler.begin();
 
   hangingDetector.begin([] (void ()) {
-    displayAdapter.clear();
-    displayAdapter.render(0, 0, "Suspending...");
+    programManager.suspend();
     roboCarHandler.stop();
   }, 10);
 
+  rf24Listener.set(&hangingDetector);
   rf24Listener.begin();
 
   remoteControlCar.begin();

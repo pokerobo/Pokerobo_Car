@@ -5,8 +5,14 @@
 #include "Pokerobo_RCB_client.h"
 #include "Moving_Command.h"
 
-class InputListener {
+class AddressExposer {
   public:
+    virtual uint8_t getShortAddress();
+};
+
+class InputListener: public AddressExposer {
+  public:
+    virtual uint8_t getShortAddress();
     virtual int read(MasterContext* context, JoystickAction* action, MovingCommand* command);
 };
 

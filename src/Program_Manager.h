@@ -19,6 +19,7 @@ class ProgramManager {
     bool add(ProgramCapsule* programCapsule);
     void begin();
     int check();
+    void suspend();
   protected:
     int enterDashboard_(MasterContext* context, JoystickAction* action);
     int processDashboard_(MasterContext* context, JoystickAction* action);

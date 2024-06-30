@@ -134,3 +134,13 @@ int ProgramManager::move_(MasterContext* context, JoystickAction* action, Moving
       return executeProgram_(context, action, command);
   }
 }
+
+void ProgramManager::suspend() {
+  if (_displayAdapter == NULL) {
+    return;
+  }
+  _displayAdapter->clear();
+  _displayAdapter->render(0, 0, "Listening on #");
+  char num_[4];
+  _displayAdapter->render(14, 0, itoa(_inputListener->getShortAddress(), num_, 10));
+}
