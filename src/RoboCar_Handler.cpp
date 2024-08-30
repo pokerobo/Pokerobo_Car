@@ -69,10 +69,6 @@ void RoboCarHandler::move(int x, int y, bool reversed) {
     return;
   }
 
-  if (!_active) {
-    x = y = 0;
-  }
-
   MovingCommand packet(reversed);
   _movingResolver->resolve(&packet, x, y);
   move(&packet);
@@ -88,6 +84,12 @@ void RoboCarHandler::move(MovingCommand* packet) {
 
 void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection,
     bool reversed) {
+
+  if (!_active) {
+    writeL298nPins_(0, 0, 0, 0, 0, 0);
+    return;
+  }
+
   uint8_t in1Val = LOW;
   uint8_t in2Val = LOW;
   uint8_t in3Val = LOW;
@@ -117,14 +119,6 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
   int enbVal = rightSpeed;
 
   if (reversed) {
-    /*
-    if (in1Val == HIGH) {
-      in1Val = LOW;
-    } else {
-      in1Val = HIGH;
-    }
-    */
-    // in1Val = (in1Val == HIGH) ? LOW : HIGH;
     in1Val = HIGH - in1Val;
     in2Val = HIGH - in2Val;
     in3Val = HIGH - in3Val;
@@ -138,13 +132,7 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
   debugWriteL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
   #endif
 
-  digitalWrite(IN_1, in1Val);
-  digitalWrite(IN_2, in2Val);
-  digitalWrite(IN_3, in3Val);
-  digitalWrite(IN_4, in4Val);
-
-  analogWrite(EN_A, enaVal);
-  analogWrite(EN_B, enbVal);
+  writeL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
 }
 
 void RoboCarHandler::stop() {
@@ -159,6 +147,17 @@ void RoboCarHandler::stop() {
   #if __ROBOCAR_RUNNING_LOG__
   debugStop_();
   #endif
+}
+
+void RoboCarHandler::writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    int enaVal, int enbVal) {
+  digitalWrite(IN_1, in1Val);
+  digitalWrite(IN_2, in2Val);
+  digitalWrite(IN_3, in3Val);
+  digitalWrite(IN_4, in4Val);
+
+  analogWrite(EN_A, enaVal);
+  analogWrite(EN_B, enbVal);
 }
 
 void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,

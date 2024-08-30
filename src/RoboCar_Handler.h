@@ -30,6 +30,8 @@ class RoboCarHandler: public CarDebugLoggable {
     void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection, bool reversed = false);
     void move(MovingCommand* packet);
   protected:
+    void writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+        int enaVal, int enbVal);
     virtual void debugTurnOn_();
     virtual void debugTurnOff_();
     virtual void debugStop_();
