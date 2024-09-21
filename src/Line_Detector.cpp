@@ -10,6 +10,18 @@
 
 PCF8574 ex0(0x20);
 
+char* LineDetector::toText(uint8_t flag, char* buff, bool asBinDigits) {
+  uint8_t len = numOfBits();
+  for (int i=0; i<len; i++) {
+    if ((flag >> i) & 0b1) {
+      buff[i] = asBinDigits ? '1' : '|';
+    } else {
+      buff[i] = asBinDigits ? '0' : '-';
+    }
+  }
+  buff[len] = '\0';
+}
+
 void LineDetector::setBlackLine(bool yes) {
   _blackLine = yes;
 }

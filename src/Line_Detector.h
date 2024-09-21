@@ -8,6 +8,7 @@ class LineDetector {
     virtual int begin();
     virtual uint8_t numOfBits();
     virtual uint8_t read(bool raw=false);
+    char* toText(uint8_t flag, char* buff, bool asBinDigits=true);
     void setBlackLine(bool yes);
     bool isBlackLine();
   protected:
