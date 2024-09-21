@@ -7,6 +7,7 @@ class DisplayAdapter {
   public:
     DisplayAdapter();
     void begin(bool backlight=true);
+    void setBacklight(bool enabled);
     void render(ProgramCollection* programCollection);
     void render(int16_t col, int16_t row, char* text);
     void clear();

@@ -17,6 +17,15 @@ void DisplayAdapter::begin(bool backlight) {
   }
 }
 
+void DisplayAdapter::setBacklight(bool enabled) {
+  LiquidCrystal_I2C* lcd = (LiquidCrystal_I2C*)_lcdRef;
+  if (enabled) {
+    lcd->backlight();
+  } else {
+    lcd->noBacklight();
+  }
+}
+
 void DisplayAdapter::render(ProgramCollection* programCollection) {
   
 }
