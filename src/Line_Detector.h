@@ -7,14 +7,20 @@ class LineDetector {
   public:
     virtual int begin();
     virtual uint8_t numOfBits();
-    virtual uint8_t read();
+    virtual uint8_t read(bool raw=false);
+    void setBlackLine(bool yes);
+    bool isBlackLine();
+  protected:
+    uint8_t flip(uint8_t flag);
+  private:
+    bool _blackLine = true;
 };
 
 class LineDetector5Channels: public LineDetector {
   public:
     int begin();
     uint8_t numOfBits();
-    uint8_t read();
+    uint8_t read(bool raw=false);
 };
 
 #endif
