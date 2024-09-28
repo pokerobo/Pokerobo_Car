@@ -15,14 +15,15 @@ PCF8574 ex0(0x20);
 
 char* LineDetector::toText(uint8_t flag, char* buff, bool asBinDigits) {
   uint8_t len = numOfBits();
-  for (int i=0; i<len; i++) {
-    if ((flag >> i) & 0b1) {
+  for (byte i=0; i<len; i++) {
+    if ((flag >> (len-1-i)) & 0b1) {
       buff[i] = asBinDigits ? '1' : '|';
     } else {
       buff[i] = asBinDigits ? '0' : '-';
     }
   }
   buff[len] = '\0';
+  return buff;
 }
 
 void LineDetector::setBlackLine(bool yes) {
@@ -44,6 +45,44 @@ uint8_t LineDetector::flip(uint8_t flag) {
     flag = ~flag;
   }
   return flag;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+#define isSensorAt(sensorPosition, i) ((sensorPosition >> i) & 0b1)
+
+LineDetectorXChannels::LineDetectorXChannels(uint8_t sensorPosition) {
+  _numOfSensors = 0;
+  _sensorPosition = sensorPosition;
+  for(byte i=0; i<8; i++) {
+    if (isSensorAt(_sensorPosition, i)) {
+      _numOfSensors++;
+    }
+  }
+}
+
+int LineDetectorXChannels::begin() {
+  for(byte i=0; i<8; i++) {
+    if (isSensorAt(_sensorPosition, i)) {
+      pinMode(ex0, i, INPUT);
+    }
+  }
+  return 0;
+}
+
+uint8_t LineDetectorXChannels::numOfBits() {
+  return _numOfSensors;
+}
+
+uint8_t LineDetectorXChannels::read(bool raw) {
+  uint8_t flag = 0;
+  uint8_t count = 0;
+  for(int8_t i=7; i>=0; i--) {
+    if (isSensorAt(_sensorPosition, i)) {
+      flag |= digitalRead(ex0, i) << count++;
+    }
+  }
+  return raw ? flag : flip(flag);
 }
 
 //-------------------------------------------------------------------------------------------------

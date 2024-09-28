@@ -17,6 +17,17 @@ class LineDetector {
     bool _blackLine = true;
 };
 
+class LineDetectorXChannels: public LineDetector {
+  public:
+    LineDetectorXChannels(uint8_t sensorPosition);
+    int begin();
+    uint8_t numOfBits();
+    uint8_t read(bool raw=false);
+  private:
+    uint8_t _numOfSensors = 0;
+    uint8_t _sensorPosition = 0;
+};
+
 class LineDetector5Channels: public LineDetector {
   public:
     int begin();
