@@ -24,4 +24,18 @@ class LineDetector5Channels: public LineDetector {
     uint8_t read(bool raw=false);
 };
 
+class LineDetector3Channels: public LineDetector {
+  public:
+    int begin();
+    uint8_t numOfBits();
+    uint8_t read(bool raw=false);
+};
+
+class LineDetector4Channels: public LineDetector {
+  public:
+    int begin();
+    uint8_t numOfBits();
+    uint8_t read(bool raw=false);
+};
+
 #endif
