@@ -23,18 +23,15 @@ void RoboCarHandler::set(MovingResolver* movingResolver) {
 
 int RoboCarHandler::begin() {
   // Set all the motor control pins to outputs
-	pinMode(EN_A, OUTPUT);
-	pinMode(EN_B, OUTPUT);
-	pinMode(IN_1, OUTPUT);
-	pinMode(IN_2, OUTPUT);
-	pinMode(IN_3, OUTPUT);
-	pinMode(IN_4, OUTPUT);
-	
-	// Turn off motors - Initial state
-	digitalWrite(IN_1, LOW);
-	digitalWrite(IN_2, LOW);
-	digitalWrite(IN_3, LOW);
-	digitalWrite(IN_4, LOW);
+  pinMode(EN_A, OUTPUT);
+  pinMode(EN_B, OUTPUT);
+  pinMode(IN_1, OUTPUT);
+  pinMode(IN_2, OUTPUT);
+  pinMode(IN_3, OUTPUT);
+  pinMode(IN_4, OUTPUT);
+
+  // Turn off motors - Initial state
+  writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
 }
 
 bool RoboCarHandler::isActive() {
@@ -86,7 +83,7 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
     bool reversed) {
 
   if (!_active) {
-    writeL298nPins_(0, 0, 0, 0, 0, 0);
+    writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
     return;
   }
 
@@ -136,14 +133,7 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
 }
 
 void RoboCarHandler::stop() {
-  digitalWrite(IN_1, LOW);
-  digitalWrite(IN_2, LOW);
-  analogWrite(EN_A, 0);
-
-  digitalWrite(IN_3, LOW);
-  digitalWrite(IN_4, LOW);
-  analogWrite(EN_B, 0);
-
+  writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
   #if __ROBOCAR_RUNNING_LOG__
   debugStop_();
   #endif
