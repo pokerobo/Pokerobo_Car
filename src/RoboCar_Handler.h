@@ -16,6 +16,13 @@
 #include "Moving_Resolver.h"
 #include "Moving_Command.h"
 
+typedef enum POKEROBO_CAR_STATE {
+  POKEROBO_CAR_IDLE = 0,
+  POKEROBO_CAR_ACTIVE,
+  POKEROBO_CAR_RUNNING,
+  POKEROBO_CAR_STOPPED,
+} pokerobo_car_state_t;
+
 class RoboCarHandler: public CarDebugLoggable {
   public:
     RoboCarHandler(MovingResolver* movingResolver=NULL);
@@ -24,21 +31,24 @@ class RoboCarHandler: public CarDebugLoggable {
     bool isActive();
     void turnOn();
     void turnOff();
-    void flip();
+    void toggle();
     void stop();
     void move(int x, int y, bool reversed = false);
     void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection, bool reversed = false);
     void move(MovingCommand* packet);
+    pokerobo_car_state_t getState();
   protected:
+    void updateState_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+        int enaVal, int enbVal);
     void writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
         int enaVal, int enbVal);
-    virtual void debugTurnOn_();
-    virtual void debugTurnOff_();
-    virtual void debugStop_();
+    virtual void debugTurnOn_(pokerobo_car_state_t prevState);
+    virtual void debugTurnOff_(pokerobo_car_state_t prevState);
+    virtual void debugStop_(pokerobo_car_state_t prevState);
     virtual void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
-        int enaVal, int enbVal);
+        int enaVal, int enbVal, pokerobo_car_state_t prevState);
   private:
-    bool _active = false;
+    pokerobo_car_state_t _state = POKEROBO_CAR_IDLE;
     MovingResolver* _movingResolver = NULL;
 };
 
@@ -46,11 +56,11 @@ class RoboCarHandlerVerbose: public RoboCarHandler {
   public:
     using RoboCarHandler::RoboCarHandler;
   protected:
-    void debugTurnOn_();
-    void debugTurnOff_();
-    void debugStop_();
+    void debugTurnOn_(pokerobo_car_state_t prevState);
+    void debugTurnOff_(pokerobo_car_state_t prevState);
+    void debugStop_(pokerobo_car_state_t prevState);
     void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
-        int enaVal, int enbVal);
+        int enaVal, int enbVal, pokerobo_car_state_t prevState);
 };
 
 #endif

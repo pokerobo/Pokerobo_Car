@@ -34,26 +34,40 @@ int RoboCarHandler::begin() {
   writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
 }
 
+pokerobo_car_state_t RoboCarHandler::getState() {
+  return _state;
+}
+
 bool RoboCarHandler::isActive() {
-  return _active;
+  return _state != POKEROBO_CAR_IDLE;
 }
 
 void RoboCarHandler::turnOn() {
-  _active = true;
   #if __ROBOCAR_RUNNING_LOG__
-  debugTurnOn_();
+  pokerobo_car_state_t prevState = _state;
+  #endif
+  if (_state == POKEROBO_CAR_IDLE) {
+    _state = POKEROBO_CAR_ACTIVE;
+  }
+  #if __ROBOCAR_RUNNING_LOG__
+  debugTurnOn_(prevState);
   #endif
 }
 
 void RoboCarHandler::turnOff() {
   #if __ROBOCAR_RUNNING_LOG__
-  debugTurnOff_();
+  pokerobo_car_state_t prevState = _state;
   #endif
   stop();
-  _active = false;
+  if (_state == POKEROBO_CAR_STOPPED) {
+    _state = POKEROBO_CAR_IDLE;
+  }
+  #if __ROBOCAR_RUNNING_LOG__
+  debugTurnOff_(prevState);
+  #endif
 }
 
-void RoboCarHandler::flip() {
+void RoboCarHandler::toggle() {
   if (isActive()) {
     turnOff();
   } else {
@@ -82,7 +96,7 @@ void RoboCarHandler::move(MovingCommand* packet) {
 void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection,
     bool reversed) {
 
-  if (!_active) {
+  if (_state == POKEROBO_CAR_IDLE) {
     writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
     return;
   }
@@ -126,16 +140,25 @@ void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, i
   }
 
   #if __ROBOCAR_RUNNING_LOG__
-  debugWriteL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
+  pokerobo_car_state_t prevState = _state;
   #endif
 
   writeL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
+  updateState_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal);
+
+  #if __ROBOCAR_RUNNING_LOG__
+  debugWriteL298nPins_(in1Val, in2Val, in3Val, in4Val, enaVal, enbVal, prevState);
+  #endif
 }
 
 void RoboCarHandler::stop() {
-  writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
   #if __ROBOCAR_RUNNING_LOG__
-  debugStop_();
+  pokerobo_car_state_t prevState = _state;
+  #endif
+  writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
+  updateState_(LOW, LOW, LOW, LOW, 0, 0);
+  #if __ROBOCAR_RUNNING_LOG__
+  debugStop_(prevState);
   #endif
 }
 
@@ -150,23 +173,37 @@ void RoboCarHandler::writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3
   analogWrite(EN_B, enbVal);
 }
 
-void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+void RoboCarHandler::updateState_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
     int enaVal, int enbVal) {
+  if (_state != POKEROBO_CAR_IDLE) {
+    bool running = false;
+    if (in1Val != in2Val && enaVal != 0) {
+      running = true;
+    }
+    if (in3Val != in4Val && enbVal != 0) {
+      running = true;
+    }
+    _state = running ? POKEROBO_CAR_RUNNING : POKEROBO_CAR_STOPPED;
+  }
 }
 
-void RoboCarHandler::debugTurnOn_() {
+void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    int enaVal, int enbVal, pokerobo_car_state_t prevState) {
 }
 
-void RoboCarHandler::debugTurnOff_() {
+void RoboCarHandler::debugTurnOn_(pokerobo_car_state_t prevState) {
 }
 
-void RoboCarHandler::debugStop_() {
+void RoboCarHandler::debugTurnOff_(pokerobo_car_state_t prevState) {
+}
+
+void RoboCarHandler::debugStop_(pokerobo_car_state_t prevState) {
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void RoboCarHandlerVerbose::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
-    int enaVal, int enbVal) {
+    int enaVal, int enbVal, pokerobo_car_state_t prevState) {
   if (isDebugEnabled()) {
     char num_[7];
     getLogger()->debug(" - ", "active", ": ", isActive() ? "On" : "Off");
@@ -180,19 +217,19 @@ void RoboCarHandlerVerbose::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val,
   }
 }
 
-void RoboCarHandlerVerbose::debugTurnOn_() {
+void RoboCarHandlerVerbose::debugTurnOn_(pokerobo_car_state_t prevState) {
   if (isDebugEnabled()) {
     getLogger()->debug("RoboCarHandler", "::", "turnOn", "()");
   }
 }
 
-void RoboCarHandlerVerbose::debugTurnOff_() {
+void RoboCarHandlerVerbose::debugTurnOff_(pokerobo_car_state_t prevState) {
   if (isDebugEnabled()) {
     getLogger()->debug("RoboCarHandler", "::", "turnOff", "()");
   }
 }
 
-void RoboCarHandlerVerbose::debugStop_() {
+void RoboCarHandlerVerbose::debugStop_(pokerobo_car_state_t prevState) {
   if (isDebugEnabled()) {
     getLogger()->debug("RoboCarHandler", "::", "stop", "()");
   }
