@@ -46,6 +46,7 @@
 class RF24Listener: public CarDebugLoggable, public InputListener, public InputController {
   public:
     RF24Listener(uint64_t address=__RF24_DEFAULT_ADDRESS__, bool debugEnabled=true);
+    void begin(uint64_t address);
     void begin();
     uint8_t getShortAddress();
     int read(MasterContext* context, JoystickAction* action, MovingCommand* command);

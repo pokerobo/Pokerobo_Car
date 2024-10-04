@@ -28,6 +28,7 @@ class RoboCarHandler: public CarDebugLoggable {
     RoboCarHandler(MovingResolver* movingResolver=NULL);
     void set(MovingResolver* movingResolver);
     int begin();
+    bool isIdle();
     bool isActive();
     void turnOn();
     void turnOff();

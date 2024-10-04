@@ -12,6 +12,11 @@ RF24Listener::RF24Listener(uint64_t address, bool debugEnabled) {
 }
 
 void RF24Listener::begin() {
+  begin(_address);
+}
+
+void RF24Listener::begin(uint64_t address) {
+  _address = address;
   RF24* _radio = (RF24*)_radioRef;
   _radio->begin();
   // _radio->setRetries(5, 15);

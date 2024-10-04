@@ -38,6 +38,10 @@ pokerobo_car_state_t RoboCarHandler::getState() {
   return _state;
 }
 
+bool RoboCarHandler::isIdle() {
+  return _state == POKEROBO_CAR_IDLE;
+}
+
 bool RoboCarHandler::isActive() {
   return _state != POKEROBO_CAR_IDLE;
 }
