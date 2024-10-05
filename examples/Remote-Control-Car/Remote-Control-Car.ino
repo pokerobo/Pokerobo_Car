@@ -1,8 +1,8 @@
 #include "Pokerobo_Car.h"
 
-DisplayAdapter displayAdapter;
-
 const uint64_t address = 0x18580900LL + 1;
+
+DisplayAdapter displayAdapter;
 RF24Listener rf24Listener(address);
 HangingDetector hangingDetector;
 

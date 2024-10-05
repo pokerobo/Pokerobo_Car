@@ -43,7 +43,9 @@ void QuickStartLauncher::begin(uint8_t address) {
 }
 
 void QuickStartLauncher::check() {
+  uint32_t begin = millis();
   programManager.check();
+  delay(max(100 - (millis() - begin), 0));
 }
 
 #endif
