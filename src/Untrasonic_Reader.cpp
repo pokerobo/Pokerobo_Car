@@ -12,16 +12,16 @@ void UntrasonicReaderInRawCode::begin() {
   pinMode(_echoPin, INPUT);
 }
 
-unsigned long UntrasonicReaderInRawCode::ping_cm() {
+unsigned long UntrasonicReaderInRawCode::distance_cm() {
   return estimate() * 0.0343 / 2;
 }
 
-unsigned long UntrasonicReaderInRawCode::ping_in() {
+unsigned long UntrasonicReaderInRawCode::distance_in() {
   return estimate() * 0.0135 / 2;
 }
 
 unsigned long UntrasonicReaderInRawCode::ping() {
-  return ping_cm();
+  return estimate();
 }
 
 unsigned long UntrasonicReaderInRawCode::estimate() {
@@ -48,18 +48,20 @@ UntrasonicReaderByNewPing::~UntrasonicReaderByNewPing() {
 void UntrasonicReaderByNewPing::begin() {
 }
 
-unsigned long UntrasonicReaderByNewPing::ping_cm() {
+unsigned long UntrasonicReaderByNewPing::distance_cm() {
   if (_sonarRef == NULL) return 0;
   NewPing* _sonar = (NewPing*)_sonarRef;
   return _sonar->ping_cm();
 }
 
-unsigned long UntrasonicReaderByNewPing::ping_in() {
+unsigned long UntrasonicReaderByNewPing::distance_in() {
   if (_sonarRef == NULL) return 0;
   NewPing* _sonar = (NewPing*)_sonarRef;
   return _sonar->ping_in();
 }
 
 unsigned long UntrasonicReaderByNewPing::ping() {
-  return ping_cm();
+  if (_sonarRef == NULL) return 0;
+  NewPing* _sonar = (NewPing*)_sonarRef;
+  return _sonar->ping();
 }
