@@ -14,7 +14,7 @@
 class ObstacleAvoidingHandler {
   public:
     ObstacleAvoidingHandler(RoboCarHandler *carHandler,
-        UntrasonicReader *sonar, void *servo=NULL);
+        UntrasonicReader *sonar=NULL, void *servo=NULL);
     void begin();
     virtual bool willBeCollided();
     virtual uint32_t detectObstacle();
@@ -31,6 +31,7 @@ class ObstacleAvoidingHandler {
     uint32_t lookRight();
     void attachServo(byte pin);
     void rotateServo(byte angle);
+    void setupSonar();
     void turnLeft();
     void turnRight();
     void moveForward();

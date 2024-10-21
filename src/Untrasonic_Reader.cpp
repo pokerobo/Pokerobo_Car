@@ -1,6 +1,12 @@
 #include "Untrasonic_Reader.h"
 #include <NewPing.h>
 
+bool UntrasonicReader::isActive() {
+  return _active;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 UntrasonicReaderInRawCode::UntrasonicReaderInRawCode(uint8_t trigger_pin,
         uint8_t echo_pin) {
   _triggerPin = trigger_pin;
@@ -8,6 +14,7 @@ UntrasonicReaderInRawCode::UntrasonicReaderInRawCode(uint8_t trigger_pin,
 }
 
 void UntrasonicReaderInRawCode::begin() {
+  _active = true;
   pinMode(_triggerPin, OUTPUT);
   pinMode(_echoPin, INPUT);
 }
@@ -33,6 +40,8 @@ unsigned long UntrasonicReaderInRawCode::estimate() {
   return pulseIn(_echoPin, HIGH);
 }
 
+//-------------------------------------------------------------------------------------------------
+
 UntrasonicReaderByNewPing::UntrasonicReaderByNewPing(uint8_t trigger_pin,
         uint8_t echo_pin,
         unsigned int max_cm_distance) {
@@ -46,6 +55,7 @@ UntrasonicReaderByNewPing::~UntrasonicReaderByNewPing() {
 }
 
 void UntrasonicReaderByNewPing::begin() {
+  _active = true;
 }
 
 unsigned long UntrasonicReaderByNewPing::distance_cm() {

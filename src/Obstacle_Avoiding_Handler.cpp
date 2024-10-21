@@ -8,7 +8,7 @@
 ObstacleAvoidingHandler::ObstacleAvoidingHandler(RoboCarHandler *carHandler,
         UntrasonicReader *sonar, void *servo) {
   _roboCarHandler = carHandler;
-  _sonar = sonar;
+  _sonar = sonar != NULL ? sonar : new UntrasonicReaderByNewPing(A2, A3);
   _servo = servo != NULL ? servo : new Servo();
 }
 
@@ -17,6 +17,7 @@ void ObstacleAvoidingHandler::begin() {
   _prevDistance = 0;
   attachServo(RC_DEFAULT_SERVO_PIN);
   rotateServo(_sonarDefaultPositionAngle);
+  setupSonar();
 }
 
 uint32_t ObstacleAvoidingHandler::lookLeft() {
@@ -41,6 +42,12 @@ void ObstacleAvoidingHandler::rotateServo(byte angle) {
   if (_servo == NULL) return;
   Servo* servo_ = (Servo*)_servo;
   servo_->write(angle);
+}
+
+void ObstacleAvoidingHandler::setupSonar() {
+  if (_sonar == NULL) return;
+  if (_sonar->isActive()) return;
+  _sonar->begin();
 }
 
 uint32_t ObstacleAvoidingHandler::lookRight() {

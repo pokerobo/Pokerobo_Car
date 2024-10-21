@@ -9,6 +9,9 @@ class UntrasonicReader {
     virtual unsigned long distance_cm();
     virtual unsigned long distance_in();
     virtual unsigned long ping();
+    virtual bool isActive();
+  protected:
+    bool _active = false;
 };
 
 class UntrasonicReaderInRawCode: public UntrasonicReader {
