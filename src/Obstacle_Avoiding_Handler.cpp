@@ -80,7 +80,7 @@ void ObstacleAvoidingHandler::moveStop() {
   delay(100);
 }
 
-uint32_t ObstacleAvoidingHandler::getDistance() {
+uint32_t ObstacleAvoidingHandler::detectObstacle() {
   _prevDistance = _distance;
   _distance = _sonar->distance_cm();
   if (_distance == 0) {
@@ -90,7 +90,7 @@ uint32_t ObstacleAvoidingHandler::getDistance() {
 }
 
 bool ObstacleAvoidingHandler::willBeCollided() {
-  return getDistance() < _minDistanceToObstacle;
+  return detectObstacle() < _minDistanceToObstacle;
 }
 
 void ObstacleAvoidingHandler::move() {
@@ -98,10 +98,7 @@ void ObstacleAvoidingHandler::move() {
     moveStop();
     moveBackward();
 
-    int distanceOnLeft = lookLeft();
-    int distanceOnRight = lookRight();
-
-    if(distanceOnLeft > distanceOnRight) {
+    if(lookLeft() > lookRight()) {
       turnLeft();
     } else {
       turnRight();

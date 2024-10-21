@@ -4,21 +4,23 @@
 #include "RoboCar_Handler.h"
 #include "Untrasonic_Reader.h"
 
-#define RC_SPEED                    150
-#define RC_MOVING_BACKWARD_TIME     500
-#define RC_TURN_LR_TIME             500
-#define RC_MIN_DISTANCE_TO_OBSTACLE  20
+#define RC_SPEED                      200
+#define RC_MOVING_BACKWARD_TIME       500
+#define RC_TURN_LR_TIME               500
+#define RC_MIN_DISTANCE_TO_OBSTACLE    20
+#define DEFAULT_PROBE_ROTATION_ANGLE   80
+#define DEFAULT_SERVO_POSITION_ANGLE   90
 
 class ObstacleAvoidingHandler {
   public:
     ObstacleAvoidingHandler(RoboCarHandler *carHandler,
         UntrasonicReader *sonar, void *servo=NULL);
     void begin();
-    virtual uint32_t getDistance();
     virtual bool willBeCollided();
+    virtual uint32_t detectObstacle();
     virtual void move();
-    void setSonarDefaultPositionAngle(byte angle);
     void setProbeRotationAngle(byte angle);
+    void setSonarDefaultPositionAngle(byte angle);
     void setMinDistanceToObstacle(uint16_t distance);
     void setMovingBackwardDuration(uint16_t duration);
     void setTurnLeftDuration(uint16_t duration);
@@ -40,8 +42,8 @@ class ObstacleAvoidingHandler {
     RoboCarHandler *_roboCarHandler = NULL;
     UntrasonicReader *_sonar = NULL;
     void *_servo = NULL;
-    byte _sonarDefaultPositionAngle = 90;
-    byte _probeRotationAngle = 70;
+    byte _probeRotationAngle = DEFAULT_PROBE_ROTATION_ANGLE;
+    byte _sonarDefaultPositionAngle = DEFAULT_SERVO_POSITION_ANGLE;
     uint16_t _minDistanceToObstacle = RC_MIN_DISTANCE_TO_OBSTACLE;
     uint16_t _movingBackwardDuration = RC_MOVING_BACKWARD_TIME;
     uint16_t _turnLeftDuration = RC_TURN_LR_TIME;
