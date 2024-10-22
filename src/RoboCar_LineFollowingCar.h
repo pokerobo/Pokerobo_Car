@@ -3,7 +3,7 @@
 
 #include "Line_Detector.h"
 #include "Pokerobo_Arm.h"
-#include "RoboCar_RemoteControl.h"
+#include "RoboCar_RemoteControlCar.h"
 
 class LineFollowingCar: public RemoteControlCar {
   public:

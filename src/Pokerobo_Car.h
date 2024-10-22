@@ -6,7 +6,7 @@
 
 #include "Display_Adapter.h"
 #include "Program_Manager.h"
-#include "RoboCar_RemoteControl.h"
-#include "RoboCar_LineFollower.h"
+#include "RoboCar_RemoteControlCar.h"
+#include "RoboCar_LineFollowingCar.h"
 #include "Untrasonic_Reader.h"
 #include "Obstacle_Avoiding_Handler.h"
