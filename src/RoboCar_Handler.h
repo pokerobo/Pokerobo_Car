@@ -35,18 +35,23 @@ class RoboCarHandler: public CarDebugLoggable {
     void toggle();
     void stop();
     void move(int x, int y, bool reversed = false);
-    void move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection, bool reversed = false);
+    void move(int8_t leftDirection, int leftSpeed,
+        int rightSpeed, int8_t rightDirection,
+        bool reversed = false);
     void move(MovingCommand* packet);
     pokerobo_car_state_t getState();
   protected:
-    void updateState_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    void updateState_(uint8_t in1Val, uint8_t in2Val,
+        uint8_t in3Val, uint8_t in4Val,
         int enaVal, int enbVal);
-    void writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    void writeL298nPins_(uint8_t in1Val, uint8_t in2Val,
+        uint8_t in3Val, uint8_t in4Val,
         int enaVal, int enbVal);
     virtual void debugTurnOn_(pokerobo_car_state_t prevState);
     virtual void debugTurnOff_(pokerobo_car_state_t prevState);
     virtual void debugStop_(pokerobo_car_state_t prevState);
-    virtual void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    virtual void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val,
+        uint8_t in3Val, uint8_t in4Val,
         int enaVal, int enbVal, pokerobo_car_state_t prevState);
   private:
     pokerobo_car_state_t _state = POKEROBO_CAR_IDLE;
@@ -60,7 +65,8 @@ class RoboCarHandlerVerbose: public RoboCarHandler {
     void debugTurnOn_(pokerobo_car_state_t prevState);
     void debugTurnOff_(pokerobo_car_state_t prevState);
     void debugStop_(pokerobo_car_state_t prevState);
-    void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+    void debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val,
+        uint8_t in3Val, uint8_t in4Val,
         int enaVal, int enbVal, pokerobo_car_state_t prevState);
 };
 

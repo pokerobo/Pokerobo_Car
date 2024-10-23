@@ -93,12 +93,13 @@ void RoboCarHandler::move(MovingCommand* packet) {
   if (packet == NULL) {
     return;
   }
-  move(packet->getLeftDirection(), packet->getLeftSpeed(), packet->getRightSpeed(), packet->getRightDirection(),
-    packet->isReversed());
+  move(packet->getLeftDirection(), packet->getLeftSpeed(),
+      packet->getRightSpeed(), packet->getRightDirection(),
+      packet->isReversed());
 }
 
-void RoboCarHandler::move(int8_t leftDirection, int leftSpeed, int rightSpeed, int8_t rightDirection,
-    bool reversed) {
+void RoboCarHandler::move(int8_t leftDirection, int leftSpeed,
+    int rightSpeed, int8_t rightDirection, bool reversed) {
 
   if (_state == POKEROBO_CAR_IDLE) {
     writeL298nPins_(LOW, LOW, LOW, LOW, 0, 0);
@@ -166,7 +167,8 @@ void RoboCarHandler::stop() {
   #endif
 }
 
-void RoboCarHandler::writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+void RoboCarHandler::writeL298nPins_(uint8_t in1Val, uint8_t in2Val,
+    uint8_t in3Val, uint8_t in4Val,
     int enaVal, int enbVal) {
   digitalWrite(IN_1, in1Val);
   digitalWrite(IN_2, in2Val);
@@ -177,7 +179,8 @@ void RoboCarHandler::writeL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3
   analogWrite(EN_B, enbVal);
 }
 
-void RoboCarHandler::updateState_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+void RoboCarHandler::updateState_(uint8_t in1Val, uint8_t in2Val,
+    uint8_t in3Val, uint8_t in4Val,
     int enaVal, int enbVal) {
   if (_state != POKEROBO_CAR_IDLE) {
     bool running = false;
@@ -191,7 +194,8 @@ void RoboCarHandler::updateState_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val
   }
 }
 
-void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+void RoboCarHandler::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val,
+    uint8_t in3Val, uint8_t in4Val,
     int enaVal, int enbVal, pokerobo_car_state_t prevState) {
 }
 
@@ -206,7 +210,8 @@ void RoboCarHandler::debugStop_(pokerobo_car_state_t prevState) {
 
 //-------------------------------------------------------------------------------------------------
 
-void RoboCarHandlerVerbose::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val, uint8_t in3Val, uint8_t in4Val,
+void RoboCarHandlerVerbose::debugWriteL298nPins_(uint8_t in1Val, uint8_t in2Val,
+    uint8_t in3Val, uint8_t in4Val,
     int enaVal, int enbVal, pokerobo_car_state_t prevState) {
   if (isDebugEnabled()) {
     char num_[7];
