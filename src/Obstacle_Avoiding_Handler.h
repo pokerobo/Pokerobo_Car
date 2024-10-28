@@ -2,7 +2,7 @@
 #define __POKEROBO_CAR_OBSTACLE_AVOIDING_HANDLER_H__
 
 #include "RoboCar_Handler.h"
-#include "Untrasonic_Reader.h"
+#include "Ultrasonic_Reader.h"
 
 #define RC_SPEED                      200
 #define RC_MOVING_BACKWARD_TIME       500
@@ -14,7 +14,7 @@
 class ObstacleAvoidingHandler {
   public:
     ObstacleAvoidingHandler(RoboCarHandler *carHandler,
-        UntrasonicReader *sonar=NULL, void *servo=NULL);
+        UltrasonicReader *sonar=NULL, void *servo=NULL);
     void begin();
     virtual bool willBeCollided();
     virtual uint32_t detectObstacle();
@@ -41,7 +41,7 @@ class ObstacleAvoidingHandler {
     uint32_t _distance = 0;
     uint32_t _prevDistance = 0;
     RoboCarHandler *_roboCarHandler = NULL;
-    UntrasonicReader *_sonar = NULL;
+    UltrasonicReader *_sonar = NULL;
     void *_servo = NULL;
     byte _probeRotationAngle = DEFAULT_PROBE_ROTATION_ANGLE;
     byte _sonarDefaultPositionAngle = DEFAULT_SERVO_POSITION_ANGLE;

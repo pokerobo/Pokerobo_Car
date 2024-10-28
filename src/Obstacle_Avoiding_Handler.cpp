@@ -12,9 +12,9 @@
 #endif//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 
 ObstacleAvoidingHandler::ObstacleAvoidingHandler(RoboCarHandler *carHandler,
-        UntrasonicReader *sonar, void *servo) {
+        UltrasonicReader *sonar, void *servo) {
   _roboCarHandler = carHandler;
-  _sonar = sonar != NULL ? sonar : new UntrasonicReaderByNewPing(A2, A3);
+  _sonar = sonar != NULL ? sonar : new UltrasonicReaderByNewPing(A2, A3);
   _servo = servo != NULL ? servo : new Servo();
 }
 

@@ -18,7 +18,7 @@
 #endif
 #endif//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 
-class UntrasonicReader {
+class UltrasonicReader {
   public:
     virtual void begin();
     virtual unsigned long distance_cm();
@@ -29,9 +29,9 @@ class UntrasonicReader {
     bool _active = false;
 };
 
-class UntrasonicReaderInRawCode: public UntrasonicReader {
+class UltrasonicReaderInRawCode: public UltrasonicReader {
   public:
-    UntrasonicReaderInRawCode(uint8_t trigger_pin = __ULTRASONIC_TRIGGER_PIN__,
+    UltrasonicReaderInRawCode(uint8_t trigger_pin = __ULTRASONIC_TRIGGER_PIN__,
         uint8_t echo_pin = __ULTRASONIC_ECHO_PIN__);
     void begin();
     unsigned long distance_cm();
@@ -44,12 +44,12 @@ class UntrasonicReaderInRawCode: public UntrasonicReader {
     uint8_t _echoPin = __ULTRASONIC_ECHO_PIN__;
 };
 
-class UntrasonicReaderByNewPing: public UntrasonicReader {
+class UltrasonicReaderByNewPing: public UltrasonicReader {
   public:
-    UntrasonicReaderByNewPing(uint8_t trigger_pin = __ULTRASONIC_TRIGGER_PIN__,
+    UltrasonicReaderByNewPing(uint8_t trigger_pin = __ULTRASONIC_TRIGGER_PIN__,
         uint8_t echo_pin = __ULTRASONIC_ECHO_PIN__,
         unsigned int max_cm_distance = 500);
-    ~UntrasonicReaderByNewPing();
+    ~UltrasonicReaderByNewPing();
     void begin();
     unsigned long distance_cm();
     unsigned long distance_in();
