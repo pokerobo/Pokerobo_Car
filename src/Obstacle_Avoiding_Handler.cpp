@@ -1,9 +1,15 @@
+#include "Constant.h"
 #include "Obstacle_Avoiding_Handler.h"
 #include <Servo.h>
 
+#if POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
+#define RC_DEFAULT_SERVO_PIN          ConstantOfCar::me->pinOfServo
+
+#else//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 #ifndef RC_DEFAULT_SERVO_PIN
 #define RC_DEFAULT_SERVO_PIN          2
 #endif
+#endif//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 
 ObstacleAvoidingHandler::ObstacleAvoidingHandler(RoboCarHandler *carHandler,
         UntrasonicReader *sonar, void *servo) {

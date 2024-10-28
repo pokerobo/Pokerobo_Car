@@ -9,5 +9,8 @@ ConstantOfCar defaultConstant(
    5, // pinOfL298nIn3_,
    4, // pinOfL298nIn4_,
    3, // pinOfL298nEnB_,
+  A2, // pinOfTrigger_,
+  A3, // pinOfEcho_,
+   2, // pinOfServo_,
   false
 );
