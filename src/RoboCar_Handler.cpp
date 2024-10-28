@@ -1,5 +1,18 @@
+#include "Constant.h"
 #include "RoboCar_Handler.h"
 
+#if POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
+// Motor A connections
+#define EN_A    ConstantOfCar::me->pinOfL298nEnA
+#define IN_1    ConstantOfCar::me->pinOfL298nIn1
+#define IN_2    ConstantOfCar::me->pinOfL298nIn2
+
+// Motor B connections
+#define IN_3    ConstantOfCar::me->pinOfL298nIn3
+#define IN_4    ConstantOfCar::me->pinOfL298nIn4
+#define EN_B    ConstantOfCar::me->pinOfL298nEnB
+
+#else//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 // Motor A connections
 #define EN_A    6
 #define IN_1    7
@@ -9,6 +22,7 @@
 #define IN_3    5
 #define IN_4    4
 #define EN_B    3
+#endif//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 
 #define ROBOCAR_DEADZONE_BOUND_X    52
 #define ROBOCAR_DEADZONE_BOUND_Y    52

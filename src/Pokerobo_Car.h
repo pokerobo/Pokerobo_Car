@@ -1,12 +1,6 @@
-#include "Commons.h"
+#ifndef __POKEROBO_CAR_H__
+#define __POKEROBO_CAR_H__
 
-#if (CONTROLLER == CONTROLLER_RF24)
-#include "RF24_Listener.h"
+#include "Pokerobo_Car_default.h"
+
 #endif
-
-#include "Display_Adapter.h"
-#include "Program_Manager.h"
-#include "RoboCar_RemoteControlCar.h"
-#include "RoboCar_LineFollowingCar.h"
-#include "Untrasonic_Reader.h"
-#include "Obstacle_Avoiding_Handler.h"

@@ -29,14 +29,6 @@
 #define __RF24_DEFAULT_ADDRESS__  0x123456789ABCDEF0LL
 #endif
 
-#ifndef __RF24_CE_PIN__
-#define __RF24_CE_PIN__           9
-#endif
-
-#ifndef __RF24_CSN_PIN__
-#define __RF24_CSN_PIN__          10
-#endif
-
 #define RF24_JOYSTICK_DEADZONE_X  32
 #define RF24_JOYSTICK_DEADZONE_Y  32
 

@@ -1,8 +1,23 @@
+#include "Constant.h"
 #include "RF24_Listener.h"
 
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
+
+#if POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
+#define __RF24_CE_PIN__           ConstantOfCar::me->pinOfRF24CE
+#define __RF24_CSN_PIN__          ConstantOfCar::me->pinOfRF24CSN
+
+#else//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
+#ifndef __RF24_CE_PIN__
+#define __RF24_CE_PIN__           9
+#endif
+
+#ifndef __RF24_CSN_PIN__
+#define __RF24_CSN_PIN__          10
+#endif
+#endif//POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED
 
 RF24Listener::RF24Listener(uint64_t address, bool debugEnabled) {
   RF24* _radio = new RF24(__RF24_CE_PIN__, __RF24_CSN_PIN__);

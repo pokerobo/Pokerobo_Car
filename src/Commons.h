@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define POKEROBO_CAR_DYNAMIC_CONSTANT_ENABLED 1
+
 #define __LOADING_LOG_ENABLED__         1
 #define __RUNNING_LOG_ENABLED__         1
 
