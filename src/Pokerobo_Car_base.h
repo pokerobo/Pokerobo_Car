@@ -9,7 +9,6 @@
 
 #include "Display_Adapter.h"
 #include "Program_Manager.h"
-#include "Motor_Speed_Calculator.h"
 #include "RoboCar_RemoteControlCar.h"
 #include "RoboCar_LineFollowingCar.h"
 #include "Ultrasonic_Reader.h"
