@@ -7,5 +7,6 @@ extern ConstantOfCar speedometerConstant;
 
 #include "Pokerobo_Car_base.h"
 #include "Motor_Speed_Calculator.h"
+#include "Speedometer_Wrapper.h"
 
 #endif

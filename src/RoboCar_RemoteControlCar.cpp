@@ -38,10 +38,12 @@ int RemoteControlCar::close() {
 
 RemoteControlCar::RemoteControlCar(char* title,
     DisplayAdapter* displayAdapter,
-    RoboCarHandler* roboCarHandler) {
+    RoboCarHandler* roboCarHandler,
+    SpeedometerAdapter* speedometerAdapter) {
   _title = title;
   _displayAdapter = displayAdapter;
   _roboCarHandler = roboCarHandler;
+  _speedometerAdapter = speedometerAdapter;
 }
 
 void RemoteControlCar::set(DisplayAdapter* displayAdapter) {
@@ -57,10 +59,24 @@ bool RemoteControlCar::isDebugEnabled() {
 }
 
 void RemoteControlCar::showSpeedometer_(JoystickAction* action, MovingCommand* command) {
-  if (_displayAdapter != NULL) {
+  if (_displayAdapter == NULL) return;
+  if (_speedometerAdapter == NULL) {
     _displayAdapter->render(0, 0, _title);
-    char text[16] = {};
+    char text[17] = {};
     sprintf(text, fmt, command->getLeftSpeed(), command->getRightSpeed());
+    _displayAdapter->render(0, 1, text);
+  } else {
+    char text[17] = {};
+
+    sprintf(text, "F: L%4d - R%4d",
+        command->getLeftSpeed(),
+        command->getRightSpeed());
+    _displayAdapter->render(0, 0, text);
+
+    text[0] = 0;
+    sprintf(text, "S: L%4d - R%4d",
+        (uint16_t)_speedometerAdapter->getSpeedOfMotorA(),
+        (uint16_t)_speedometerAdapter->getSpeedOfMotorB());
     _displayAdapter->render(0, 1, text);
   }
 }

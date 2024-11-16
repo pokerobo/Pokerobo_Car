@@ -5,6 +5,7 @@
 #include "Display_Adapter.h"
 #include "Moving_Command.h"
 #include "RoboCar_Handler.h"
+#include "Speedometer_Adapter.h"
 #include "Pokerobo_Arm.h"
 #include "Pokerobo_RCB_client.h"
 
@@ -21,7 +22,8 @@ class RemoteControlCar: public ProgramCapsule {
     // END: overriding
     RemoteControlCar(char* title,
         DisplayAdapter* displayAdapter=NULL,
-        RoboCarHandler* roboCarHandler=NULL);
+        RoboCarHandler* roboCarHandler=NULL,
+        SpeedometerAdapter* speedometerAdapter=NULL);
     void set(DisplayAdapter* displayAdapter);
     void set(RoboCarHandler* roboCarHandler);
   protected:
@@ -33,6 +35,7 @@ class RemoteControlCar: public ProgramCapsule {
     char* _title;
     DisplayAdapter* _displayAdapter = NULL;
     RoboCarHandler* _roboCarHandler = NULL;
+    SpeedometerAdapter* _speedometerAdapter = NULL;
     bool _debugEnabled = true;
 };
 
