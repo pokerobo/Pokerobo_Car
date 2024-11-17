@@ -88,3 +88,7 @@ DisplayAdapter* RemoteControlCar::getDisplayAdapter() {
 RoboCarHandler* RemoteControlCar::getRoboCarHandler() {
   return _roboCarHandler;
 }
+
+SpeedometerAdapter* RemoteControlCar::getSpeedometerAdapter() {
+  return _speedometerAdapter;
+}

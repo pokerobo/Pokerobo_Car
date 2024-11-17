@@ -30,6 +30,7 @@ class RemoteControlCar: public ProgramCapsule {
     virtual void showSpeedometer_(JoystickAction* action, MovingCommand* command);
     DisplayAdapter* getDisplayAdapter();
     RoboCarHandler* getRoboCarHandler();
+    SpeedometerAdapter* getSpeedometerAdapter();
     bool isDebugEnabled();
   private:
     char* _title;
