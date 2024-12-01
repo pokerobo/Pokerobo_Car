@@ -25,10 +25,10 @@
 
 class MotorSpeedCalculator {
   public:
-    static volatile float speedOfMotorA;
-    static volatile float speedOfMotorB;
-    static volatile float speedOfMotorC;
-    static volatile float speedOfMotorD;
+    static float speedOfMotorA;
+    static float speedOfMotorB;
+    static float speedOfMotorC;
+    static float speedOfMotorD;
     static void start ();
     static void begin (byte type = POKEROBO_CAR_2WHEELS,
         byte pinForA = DIGITAL_PIN_FOR_INTA,

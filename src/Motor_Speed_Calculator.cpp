@@ -6,10 +6,10 @@ MotorRotationCounter* MotorSpeedCalculator::counterForMotorB_ = NULL;
 MotorRotationCounter* MotorSpeedCalculator::counterForMotorC_ = NULL;
 MotorRotationCounter* MotorSpeedCalculator::counterForMotorD_ = NULL;
 
-volatile float MotorSpeedCalculator::speedOfMotorA = 0.0;
-volatile float MotorSpeedCalculator::speedOfMotorB = 0.0;
-volatile float MotorSpeedCalculator::speedOfMotorC = 0.0;
-volatile float MotorSpeedCalculator::speedOfMotorD = 0.0;
+float MotorSpeedCalculator::speedOfMotorA = 0.0;
+float MotorSpeedCalculator::speedOfMotorB = 0.0;
+float MotorSpeedCalculator::speedOfMotorC = 0.0;
+float MotorSpeedCalculator::speedOfMotorD = 0.0;
 
 void MotorSpeedCalculator::start() {
   begin();
