@@ -6,7 +6,6 @@
 #include "Moving_Command.h"
 #include "RoboCar_Handler.h"
 #include "Speedometer_Adapter.h"
-#include "Pokerobo_Arm.h"
 #include "Pokerobo_RCB_client.h"
 
 const char fmt[] = "L:%4d - R:%4d";

@@ -20,6 +20,8 @@ ProgramManager programManager(&rf24Listener,
 void setup() {
   Serial.begin(57600);
 
+  pinMode(A0, INPUT_PULLUP);
+
   displayAdapter.begin();
 
   roboCarHandler.begin();

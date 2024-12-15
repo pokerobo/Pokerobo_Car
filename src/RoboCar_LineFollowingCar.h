@@ -2,7 +2,6 @@
 #define __POKEROBO_CAR_ROBOCAR_LINE_FOLLOWER_H__
 
 #include "Line_Detector.h"
-#include "Pokerobo_Arm.h"
 #include "RoboCar_RemoteControlCar.h"
 
 class LineFollowingCar: public RemoteControlCar {

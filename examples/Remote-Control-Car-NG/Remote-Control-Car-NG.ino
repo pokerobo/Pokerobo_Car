@@ -1,20 +1,16 @@
 #include "Pokerobo_Car_speedometer.h"
-#include "MyRemoteControlCar.h"
 
 const uint64_t address = 0x18580900LL + 1;
 
 DisplayAdapter displayAdapter;
-
-HangingDetector hangingDetector;
 RF24Listener rf24Listener(address);
+HangingDetector hangingDetector;
 
 MovingResolver movingResolver;
 RoboCarHandler roboCarHandler(&movingResolver);
 
-SpeedometerWrapper speedometerAdapter;
-
-MyRemoteControlCar remoteControlCar("Remote Control Car",
-    &displayAdapter, &roboCarHandler, &speedometerAdapter);
+RemoteControlCar remoteControlCar("Remote Control Car",
+    &displayAdapter, &roboCarHandler);
 
 ProgramManager programManager(&rf24Listener,
     &displayAdapter, &hangingDetector);
@@ -27,8 +23,6 @@ void setup() {
   displayAdapter.begin();
 
   roboCarHandler.begin();
-
-  speedometerAdapter.begin();
 
   hangingDetector.begin([] (void ()) {
     programManager.suspend();

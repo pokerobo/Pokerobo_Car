@@ -140,7 +140,8 @@ void ProgramManager::suspend() {
     return;
   }
   _displayAdapter->clear();
-  _displayAdapter->render(0, 0, "Listening on #");
+  _displayAdapter->render(0, 0, "Listenning on ");
   char num_[4];
-  _displayAdapter->render(14, 0, itoa(_inputListener->getShortAddress(), num_, 10));
+  sprintf(num_, "%02X", _inputListener->getShortAddress());
+  _displayAdapter->render(14, 0, num_);
 }
